@@ -12,7 +12,7 @@ const securityHeaders = [
       "default-src 'self'",
       "script-src 'self' 'unsafe-inline'" + (process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""),
       "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: blob:",
+      "img-src 'self' data: blob: https://images.unsplash.com",
       "font-src 'self'",
       "connect-src 'self'",
       "frame-ancestors 'none'",
@@ -24,6 +24,10 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  images: {
+    remotePatterns: [{ protocol: "https", hostname: "images.unsplash.com" }],
+    formats: ["image/avif", "image/webp"],
+  },
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },

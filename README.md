@@ -33,6 +33,10 @@ Checks: `npm run typecheck`, `npm run lint`, `npm run build`.
 
 Optional UI is hidden until you supply data: phone, address, booking link, WhatsApp, LinkedIn/GitHub, "founded / location / team size" facts, and team profiles.
 
+## Photography
+
+Photos are royalty-free Unsplash images referenced from `src/content/images.ts` (served through `next/image` as AVIF/WebP with correct `sizes`). Replace them with your own team, office and product photography by editing that file — local files in `/public` work too. The industries and regions shown on the home page live in `src/content/content.ts` (`industries`, `regions`); edit them to match what you actually serve.
+
 ## Routes
 
 `/`, `/services`, `/services/[slug]` (6), `/work`, `/work/[slug]` (3), `/process`, `/about`, `/contact`, `/privacy`, custom 404, `/sitemap.xml`, `/robots.txt`, `/opengraph-image`, `POST /api/inquiry`.

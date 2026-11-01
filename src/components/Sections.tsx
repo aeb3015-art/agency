@@ -6,6 +6,7 @@ import { ArrowRight, ServiceIcon } from "./Icons";
 import { Pill, Reveal, SectionHeading } from "./ui";
 import { DashboardPanel, PhonePanel, StorefrontPanel } from "./Graphics";
 import { Magnetic, SplitText, Spotlight } from "./motion";
+import { Photo } from "./Photo";
 
 export function ServiceCard({ service, index = 0, featured = false, bare = false }: { service: Service; index?: number; featured?: boolean; bare?: boolean }) {
   const Wrap = bare ? ({ children }: { children: React.ReactNode }) => <>{children}</> : ({ children }: { children: React.ReactNode }) => <Reveal as="li" delay={index * 60} className={`h-full min-w-0 ${featured ? "md:col-span-2" : ""}`}>{children}</Reveal>;
@@ -40,8 +41,9 @@ export function CaseCard({ cs, index = 0 }: { cs: CaseStudy; index?: number }) {
   return (
     <Reveal as="li" delay={index * 80} className="h-full min-w-0">
       <Link href={`/work/${cs.slug}`} className="card card-hover group flex h-full flex-col overflow-hidden">
-        <div className="relative h-64 overflow-hidden border-b border-line bg-[radial-gradient(ellipse_at_top,rgba(47,107,255,0.22),transparent_70%)] px-6 pt-6">
-          <div className="origin-top scale-[0.92] transition-transform duration-500 group-hover:scale-[0.95]">
+        <div className="relative h-72 overflow-hidden border-b border-line">
+          <Photo id={cs.photo} aspect="absolute inset-0" sizes="(min-width: 1024px) 400px, (min-width: 768px) 50vw, 100vw" imgClassName="transition-transform duration-700 group-hover:scale-105" />
+          <div className="absolute inset-x-10 -bottom-16 origin-bottom scale-[0.72] transition-transform duration-500 group-hover:-translate-y-3">
             {cs.mockup === "ecommerce" && <StorefrontPanel />}
             {cs.mockup === "crm" && <DashboardPanel />}
             {cs.mockup === "booking" && (
@@ -50,8 +52,7 @@ export function CaseCard({ cs, index = 0 }: { cs: CaseStudy; index?: number }) {
               </div>
             )}
           </div>
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-ink-2 to-transparent" />
-          <span className="absolute left-4 top-4">
+          <span className="absolute left-4 top-4 z-10">
             <Pill tone={cs.status === "concept" ? "warn" : "accent"}>{cs.status === "concept" ? cs.client : "Client project"}</Pill>
           </span>
         </div>
@@ -101,8 +102,8 @@ export function TechStackSection({ compact = false }: { compact?: boolean }) {
 export function FinalCta({ headline = finalCta.headline, supporting = finalCta.supporting, cta = finalCta.cta }: { headline?: string; supporting?: string; cta?: { label: string; href: string } }) {
   return (
     <section className="relative overflow-hidden py-24 sm:py-32" aria-labelledby="cta-heading">
-      <div className="absolute inset-0 dotgrid" aria-hidden="true" />
-      <div className="glow absolute left-1/2 top-1/2 h-[26rem] w-[60rem] -translate-x-1/2 -translate-y-1/2 rounded-full" aria-hidden="true" />
+      <Photo id="office" aspect="absolute inset-0" sizes="100vw" overlay={false} imgClassName="opacity-40" />
+      <div className="absolute inset-0 bg-gradient-to-b from-ink via-ink/70 to-ink" aria-hidden="true" />
       <div className="container-x relative">
         <Reveal className="mx-auto max-w-4xl text-center">
           <h2 id="cta-heading" className="text-4xl font-semibold tracking-tight sm:text-5xl lg:text-[4rem] lg:leading-[1.02]">

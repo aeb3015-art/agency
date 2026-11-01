@@ -7,6 +7,7 @@ import { siteConfig } from "@/content/site";
 import { ServiceVisual } from "@/components/Graphics";
 import { Pill, Reveal, SectionHeading } from "@/components/ui";
 import { CaseCard, FinalCta } from "@/components/Sections";
+import { Photo } from "@/components/Photo";
 import { Check, ServiceIcon } from "@/components/Icons";
 
 type Params = { params: Promise<{ slug: string }> };
@@ -114,6 +115,11 @@ export default async function ServicePage({ params }: Params) {
             </p>
           )}
         </div>
+      </section>
+
+      <section className="relative overflow-hidden" aria-hidden="true">
+        <Photo id="laptopCode" aspect="aspect-[21/9] sm:aspect-[3/1]" sizes="100vw" overlay={false} />
+        <div className="absolute inset-0 bg-gradient-to-b from-ink via-transparent to-ink" />
       </section>
 
       {/* Benefits + deliverables */}

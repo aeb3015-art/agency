@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageHero, FinalCta } from "@/components/Sections";
 import { WorkGrid } from "@/components/WorkGrid";
+import { Photo } from "@/components/Photo";
 
 export const metadata: Metadata = {
   title: "Work — Case Studies & Concept Projects",
@@ -12,6 +13,9 @@ export default function WorkPage() {
   return (
     <>
       <PageHero eyebrow="Work" title="How we approach real business problems." description="The projects below are concept projects and illustrative solutions. They show how we think about architecture, interfaces, integrations and trade-offs. Delivered client work is marked separately when it is published, and we only cite results we can evidence." />
+      <section className="container-x pb-12">
+        <Photo id="workshop" priority aspect="aspect-[21/9]" sizes="100vw" className="rounded-2xl border border-line" />
+      </section>
       <section className="pb-20 sm:pb-28" aria-label="Case studies">
         <div className="container-x">
           <WorkGrid />

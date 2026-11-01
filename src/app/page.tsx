@@ -4,7 +4,9 @@ import { services } from "@/content/services";
 import { caseStudies } from "@/content/case-studies";
 import { expertiseStrip, faqs, heroContent, problems, processSteps, whyUs } from "@/content/content";
 import { siteConfig } from "@/content/site";
-import { HeroStack } from "@/components/Graphics";
+import { DashboardPanel, PhonePanel } from "@/components/Graphics";
+import { Photo } from "@/components/Photo";
+import { industries, regions } from "@/content/content";
 import { Enter, Magnetic, SplitText, Stagger, StaggerItem } from "@/components/motion";
 import { Accordion, ArrowLink, Reveal, SectionHeading } from "@/components/ui";
 import { CaseCard, FinalCta, ServiceCard, TechStackSection } from "@/components/Sections";
@@ -27,7 +29,7 @@ export default function HomePage() {
   return (
     <>
       {/* HERO */}
-      <section className="relative overflow-hidden pt-16 pb-20 sm:pt-24 lg:pt-28 lg:pb-32" aria-labelledby="hero-heading">
+      <section className="relative overflow-hidden pt-16 pb-24 sm:pt-24 lg:pt-28 lg:pb-36" aria-labelledby="hero-heading">
         <div className="absolute inset-0 dotgrid" aria-hidden="true" />
         <div className="container-x relative grid min-w-0 items-center gap-16 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-10">
           <div className="relative z-10">
@@ -68,9 +70,16 @@ export default function HomePage() {
               ))}
             </dl>
           </div>
-          <div className="min-w-0 pt-6 sm:pt-16 lg:pt-20">
-            <HeroStack />
-            <p className="sr-only">Illustration of a connected product: an operations dashboard, a code editor, a deployment log and a mobile booking app working together.</p>
+          <div className="relative min-w-0">
+            <Enter delay={0.2} from={{ y: 40 }}>
+              <Photo id="heroTeam" priority aspect="aspect-[4/5] sm:aspect-[5/4] lg:aspect-[4/5]" sizes="(min-width: 1024px) 560px, 100vw" className="rounded-2xl border border-line shadow-float" />
+            </Enter>
+            <Enter delay={0.6} from={{ y: 40, x: -20 }} className="absolute -bottom-8 -left-4 w-[70%] sm:-left-10 sm:w-[62%]">
+              <DashboardPanel />
+            </Enter>
+            <Enter delay={0.8} from={{ y: 40 }} className="absolute -right-3 -top-8 hidden sm:block">
+              <PhonePanel className="scale-[0.8] origin-top-right float-slow" />
+            </Enter>
           </div>
         </div>
       </section>
@@ -105,6 +114,29 @@ export default function HomePage() {
               </StaggerItem>
             ))}
           </Stagger>
+        </div>
+      </section>
+
+      {/* STUDIO BAND */}
+      <section className="relative overflow-hidden" aria-labelledby="studio-heading">
+        <Photo id="engineeringFloor" aspect="aspect-[16/10] sm:aspect-[21/9]" sizes="100vw" overlay={false} />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/50 to-ink/20" aria-hidden="true" />
+        <div className="absolute inset-0 flex items-end">
+          <div className="container-x pb-10 sm:pb-16">
+            <Reveal>
+              <p className="eyebrow">The studio</p>
+              <h2 id="studio-heading" className="mt-4 max-w-2xl text-3xl font-semibold tracking-tight sm:text-5xl lg:leading-[1.05]">
+                One senior team across design, engineering and cloud.
+              </h2>
+            </Reveal>
+            <Stagger as="ul" className="mt-8 flex flex-wrap gap-2">
+              {industries.map((i) => (
+                <StaggerItem key={i} as="li" className="rounded-full border border-line-strong bg-ink/60 px-4 py-2 text-sm backdrop-blur-sm">
+                  {i}
+                </StaggerItem>
+              ))}
+            </Stagger>
+          </div>
         </div>
       </section>
 
@@ -201,6 +233,34 @@ export default function HomePage() {
               </Reveal>
             ))}
           </ul>
+        </div>
+      </section>
+
+      {/* GLOBAL */}
+      <section className="relative overflow-hidden border-t border-line" aria-labelledby="global-heading">
+        <div className="container-x grid gap-10 py-20 sm:py-28 lg:grid-cols-2 lg:items-center">
+          <div>
+            <SectionHeading eyebrow="Working internationally" title="Remote-first, across time zones." />
+            <ul className="mt-10 grid grid-cols-2 gap-x-8 gap-y-4 sm:grid-cols-3">
+              {regions.map((r) => (
+                <li key={r.city} className="border-t border-line pt-3">
+                  <p className="font-semibold">{r.city}</p>
+                  <p className="mono text-xs text-fg-subtle">{r.zone}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <Reveal className="col-span-2">
+              <Photo id="skyline" aspect="aspect-[16/9]" sizes="(min-width: 1024px) 600px, 100vw" className="rounded-2xl border border-line" />
+            </Reveal>
+            <Reveal delay={100}>
+              <Photo id="workshop" aspect="aspect-[4/3]" sizes="(min-width: 1024px) 300px, 50vw" className="rounded-2xl border border-line" />
+            </Reveal>
+            <Reveal delay={200}>
+              <Photo id="towers" aspect="aspect-[4/3]" sizes="(min-width: 1024px) 300px, 50vw" className="rounded-2xl border border-line" />
+            </Reveal>
+          </div>
         </div>
       </section>
 

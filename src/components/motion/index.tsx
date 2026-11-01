@@ -16,7 +16,7 @@ export function MotionProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (reduced) return;
-    const lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 0.9, smoothWheel: true });
+    const lenis = new Lenis({ lerp: 0.18, wheelMultiplier: 1, smoothWheel: true });
     lenisRef.current = lenis;
     let raf = 0;
     const loop = (t: number) => {
@@ -60,7 +60,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
   const { reduced } = useMotionPref();
   if (reduced) return <>{children}</>;
   return (
-    <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
+    <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}>
       {children}
     </motion.div>
   );
@@ -108,15 +108,15 @@ export function FadeIn({ children, className = "", delay = 0, y = 28, as = "div"
     return <Plain className={className}>{children}</Plain>;
   }
   return (
-    <Comp className={className} initial={{ opacity: 0, y }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once, margin: "0px 0px -10% 0px" }} transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}>
+    <Comp className={className} initial={{ opacity: 0, y }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once, margin: "0px 0px -10% 0px" }} transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}>
       {children}
     </Comp>
   );
 }
 
 /* ---------- Staggered children ---------- */
-const containerV: Variants = { hidden: {}, show: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } } };
-const itemV: Variants = { hidden: { opacity: 0, y: 26 }, show: { opacity: 1, y: 0, transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] } } };
+const containerV: Variants = { hidden: {}, show: { transition: { staggerChildren: 0.06, delayChildren: 0 } } };
+const itemV: Variants = { hidden: { opacity: 0, y: 26 }, show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } } };
 
 export function Stagger({ children, className = "", as = "div" }: { children: ReactNode; className?: string; as?: "div" | "ul" | "ol" }) {
   const { reduced } = useMotionPref();
@@ -146,24 +146,26 @@ export function StaggerItem({ children, className = "", as = "div" }: { children
 }
 
 /* ---------- Split text: word-by-word mask reveal ---------- */
-export function SplitText({ text, className = "", as: Tag = "span", delay = 0, stagger = 0.045, once = true }: { text: string; className?: string; as?: "span" | "h1" | "h2" | "p"; delay?: number; stagger?: number; once?: boolean }) {
+export function SplitText({ text, className = "", as: Tag = "span", delay = 0, stagger = 0.03, once = true }: { text: string; className?: string; as?: "span" | "h1" | "h2" | "p"; delay?: number; stagger?: number; once?: boolean }) {
   const { reduced } = useMotionPref();
+  const ref = useRef<HTMLElement>(null);
+  // Observe the (unclipped) container once; per-word observers would sit inside overflow:hidden and never fire for short words.
+  const inView = useInView(ref, { once, margin: "0px 0px -10% 0px" });
   const words = text.split(" ");
   if (reduced) return <Tag className={className}>{text}</Tag>;
   return (
-    <Tag className={className} aria-label={text}>
+    <Tag ref={ref as React.RefObject<HTMLHeadingElement>} className={className} aria-label={text}>
       {words.map((w, i) => (
         <span key={i} className="inline-block overflow-hidden align-bottom pb-[0.08em] -mb-[0.08em]" aria-hidden="true">
           <motion.span
             className="inline-block"
-            initial={{ y: "110%", rotate: 3, opacity: 0 }}
-            whileInView={{ y: 0, rotate: 0, opacity: 1 }}
-            viewport={{ once, margin: "0px 0px -10% 0px" }}
-            transition={{ duration: 0.9, delay: delay + i * stagger, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ y: "110%", opacity: 0 }}
+            animate={inView ? { y: 0, opacity: 1 } : { y: "110%", opacity: 0 }}
+            transition={{ duration: 0.6, delay: delay + i * stagger, ease: [0.22, 1, 0.36, 1] }}
           >
             {w}
           </motion.span>
-          {i < words.length - 1 ? " " : ""}
+          {i < words.length - 1 ? "\u00A0" : ""}
         </span>
       ))}
     </Tag>
@@ -310,7 +312,7 @@ export function Enter({ children, className = "", delay = 0, from = { y: 40, x: 
   const { reduced } = useMotionPref();
   if (reduced) return <div className={className}>{children}</div>;
   return (
-    <motion.div className={className} initial={{ opacity: 0, y: from.y ?? 40, x: from.x ?? 0, rotate: from.rotate ?? 0, scale: 0.96 }} animate={{ opacity: 1, y: 0, x: 0, rotate: 0, scale: 1 }} transition={{ duration: 1, delay, ease: [0.22, 1, 0.36, 1] }}>
+    <motion.div className={className} initial={{ opacity: 0, y: from.y ?? 40, x: from.x ?? 0, rotate: from.rotate ?? 0, scale: 0.96 }} animate={{ opacity: 1, y: 0, x: 0, rotate: 0, scale: 1 }} transition={{ duration: 0.7, delay: delay * 0.6, ease: [0.22, 1, 0.36, 1] }}>
       {children}
     </motion.div>
   );

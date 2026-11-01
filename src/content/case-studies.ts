@@ -27,6 +27,7 @@ export interface CaseStudy {
   results: { label: string; detail: string }[];
   relatedServices: string[];
   mockup: "ecommerce" | "crm" | "booking";
+  photo: "retail" | "opsDesk" | "phone";
 }
 
 export const caseStudies: CaseStudy[] = [
@@ -83,6 +84,7 @@ export const caseStudies: CaseStudy[] = [
     ],
     relatedServices: ["web-development", "api-development-integrations", "cloud-devops-maintenance"],
     mockup: "ecommerce",
+    photo: "retail",
   },
   {
     slug: "crm-operations-dashboard",
@@ -137,6 +139,7 @@ export const caseStudies: CaseStudy[] = [
     ],
     relatedServices: ["custom-crm-development", "api-development-integrations", "saas-custom-software"],
     mockup: "crm",
+    photo: "opsDesk",
   },
   {
     slug: "mobile-booking-app",
@@ -191,6 +194,7 @@ export const caseStudies: CaseStudy[] = [
     ],
     relatedServices: ["mobile-app-development", "api-development-integrations", "cloud-devops-maintenance"],
     mockup: "booking",
+    photo: "phone",
   },
 ];
 

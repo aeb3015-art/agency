@@ -3,6 +3,7 @@ import { aboutContent } from "@/content/content";
 import { siteConfig } from "@/content/site";
 import { Reveal, SectionHeading } from "@/components/ui";
 import { FinalCta, PageHero } from "@/components/Sections";
+import { Photo } from "@/components/Photo";
 
 export const metadata: Metadata = {
   title: "About — A Software Development Agency Built on Clear Delivery",
@@ -26,6 +27,20 @@ export default function AboutPage() {
           </dl>
         )}
       </PageHero>
+
+      <section className="pb-16">
+        <div className="container-x grid grid-cols-2 gap-4 lg:grid-cols-[2fr_1fr_1fr]">
+          <Reveal className="col-span-2 lg:col-span-1">
+            <Photo id="boardroom" priority aspect="aspect-[16/10] lg:aspect-auto lg:h-full" sizes="(min-width: 1024px) 640px, 100vw" className="rounded-2xl border border-line" />
+          </Reveal>
+          <Reveal delay={100}>
+            <Photo id="presentation" aspect="aspect-[4/5]" sizes="(min-width: 1024px) 300px, 50vw" className="rounded-2xl border border-line" />
+          </Reveal>
+          <Reveal delay={200}>
+            <Photo id="focus" aspect="aspect-[4/5]" sizes="(min-width: 1024px) 300px, 50vw" className="rounded-2xl border border-line" />
+          </Reveal>
+        </div>
+      </section>
 
       <section className="pb-20 sm:pb-28" aria-labelledby="approach">
         <div className="container-x">

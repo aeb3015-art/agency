@@ -229,3 +229,16 @@ export const aboutContent = {
   /** Team profiles render only when provided. */
   team: [] as { name: string; role: string; bio: string }[],
 };
+
+/** Shown in the studio band. Edit to the sectors you actually serve. */
+export const industries = ["Retail & e-commerce", "Healthcare", "Logistics", "Financial services", "Education", "Real estate", "Professional services"];
+
+/** Shown in the "working internationally" section. Replace with the regions/time zones you cover. */
+export const regions = [
+  { city: "London", zone: "GMT / BST" },
+  { city: "Berlin", zone: "CET" },
+  { city: "Dubai", zone: "GST" },
+  { city: "Singapore", zone: "SGT" },
+  { city: "New York", zone: "EST" },
+  { city: "Sydney", zone: "AEST" },
+];

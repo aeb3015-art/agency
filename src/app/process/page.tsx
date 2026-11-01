@@ -3,6 +3,7 @@ import { processSteps, whyUs } from "@/content/content";
 import { PipelineGraphic } from "@/components/Graphics";
 import { Reveal, SectionHeading } from "@/components/ui";
 import { FinalCta, PageHero } from "@/components/Sections";
+import { Photo } from "@/components/Photo";
 import { Check } from "@/components/Icons";
 
 export const metadata: Metadata = {
@@ -51,6 +52,7 @@ export default function ProcessPage() {
       <section className="light py-20 sm:py-28" aria-labelledby="quality">
         <div className="container-x grid gap-12 lg:grid-cols-2 lg:items-center">
           <div>
+            <Photo id="handshake" aspect="aspect-[16/9]" sizes="(min-width: 1024px) 560px, 100vw" className="mb-8 rounded-2xl border border-line-dark" />
             <SectionHeading eyebrow="Built-in quality" title="Every change goes through the same pipeline." description="Linting, type checks, automated tests, and a build run on every commit. Changes are deployed to staging for review before they reach production, and every release has a rollback path." />
           </div>
           <PipelineGraphic />
