@@ -20,7 +20,7 @@ export function ServiceCard({ service, index = 0, featured = false, bare = false
         <h3 className="mt-6 max-w-sm text-[1.35rem] font-semibold leading-tight tracking-tight">{service.title}</h3>
         <p className="mt-3 max-w-md text-[0.95rem] leading-relaxed text-fg-muted">{service.summary}</p>
         <ul className="mt-5 flex flex-wrap gap-1.5">
-          {service.capabilities.map((c) => (
+          {service.capabilities.slice(0, 3).map((c) => (
             <li key={c}>
               <Pill>{c}</Pill>
             </li>
@@ -76,7 +76,7 @@ export function TechStackSection({ compact = false }: { compact?: boolean }) {
   return (
     <section className="light py-20 sm:py-28" aria-labelledby="tech-heading">
       <div className="container-x">
-        <SectionHeading eyebrow="Technical capabilities" title="A capabilities catalogue, grouped by discipline." description="Technologies we work with regularly. We choose a minimal, coherent set for each project rather than using everything at once." />
+        <SectionHeading eyebrow="Technical capabilities" title="What we build with." />
         <div className={`mt-12 grid gap-px overflow-hidden rounded-xl border border-line-dark bg-line-dark ${compact ? "sm:grid-cols-2 lg:grid-cols-3" : "sm:grid-cols-2 lg:grid-cols-4"}`}>
           {techStack.map((g, i) => (
             <Reveal key={g.group} delay={i * 40} className="bg-paper p-5">
@@ -102,7 +102,7 @@ export function FinalCta({ headline = finalCta.headline, supporting = finalCta.s
   return (
     <section className="relative overflow-hidden py-24 sm:py-32" aria-labelledby="cta-heading">
       <div className="absolute inset-0 dotgrid" aria-hidden="true" />
-      <div className="absolute left-1/2 top-1/2 h-[26rem] w-[60rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse,rgba(47,107,255,0.28),transparent_65%)] blur-3xl" aria-hidden="true" />
+      <div className="glow absolute left-1/2 top-1/2 h-[26rem] w-[60rem] -translate-x-1/2 -translate-y-1/2 rounded-full" aria-hidden="true" />
       <div className="container-x relative">
         <Reveal className="mx-auto max-w-4xl text-center">
           <h2 id="cta-heading" className="text-4xl font-semibold tracking-tight sm:text-5xl lg:text-[4rem] lg:leading-[1.02]">

@@ -91,7 +91,7 @@ function Cursor() {
   return (
     <motion.div
       aria-hidden="true"
-      className="pointer-events-none fixed left-0 top-0 z-[100] rounded-full border border-signal-bright/70 mix-blend-difference"
+      className="pointer-events-none fixed left-0 top-0 z-[100] rounded-full border border-signal-bright/70 will-change-transform"
       style={{ x: sx, y: sy, translateX: "-50%", translateY: "-50%" }}
       animate={{ width: active ? 44 : 14, height: active ? 44 : 14, backgroundColor: active ? "rgba(107,149,255,0.18)" : "rgba(107,149,255,0.9)" }}
       transition={{ type: "spring", stiffness: 400, damping: 30 }}

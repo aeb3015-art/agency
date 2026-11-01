@@ -261,7 +261,7 @@ export function ApiPreview({ compact = false, className = "" }: { compact?: bool
 export function HeroStack() {
   return (
     <div className="relative mx-auto w-full max-w-[40rem] lg:max-w-none" aria-hidden="true">
-      <div className="absolute -inset-16 -z-10 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(47,107,255,0.28),transparent_62%)] blur-3xl" />
+      <div className="glow absolute -inset-16 -z-10 rounded-full" />
       <Tilt max={4}>
         <div className="relative grid grid-cols-1 items-end gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:gap-6">
           <div className="relative min-w-0 sm:pl-16 sm:pt-32 lg:pl-20 lg:pt-36">
@@ -286,10 +286,6 @@ export function HeroStack() {
           </Enter>
         </div>
       </Tilt>
-      {/* connection lines */}
-      <svg className="absolute inset-0 -z-[1] h-full w-full" viewBox="0 0 600 400" fill="none" preserveAspectRatio="none">
-        <path d="M60 60 C 200 60, 220 200, 380 200 S 560 340, 590 340" stroke="rgba(107,149,255,0.35)" strokeWidth="1.5" className="flow-line" />
-      </svg>
     </div>
   );
 }

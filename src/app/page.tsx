@@ -89,23 +89,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* INTRO STATEMENT */}
-      <section className="py-20 sm:py-28" aria-label="Positioning">
-        <div className="container-x grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
-          <p className="eyebrow self-start">What we do</p>
-          <Reveal>
-            <p className="text-3xl font-medium leading-[1.2] tracking-tight sm:text-4xl lg:text-[2.75rem]">
-              We design, build, and scale software that moves businesses forward — <span className="serif-i text-fg-muted">from the first landing page to the backend, CRM and infrastructure behind it.</span>
-            </p>
-          </Reveal>
-        </div>
-      </section>
-
       {/* SERVICES — bento */}
       <section className="pb-20 sm:pb-28" aria-labelledby="services-heading">
         <div className="container-x">
-          <div className="flex flex-col gap-6 border-t border-line pt-10 sm:flex-row sm:items-end sm:justify-between">
-            <SectionHeading eyebrow="Services" title="Six disciplines. One accountable team." description="Each service stands on its own and connects cleanly to the others." />
+          <div className="flex flex-col gap-6 pt-20 sm:flex-row sm:items-end sm:justify-between sm:pt-28">
+            <SectionHeading eyebrow="Services" title="Six disciplines. One accountable team." />
             <ArrowLink href="/services" className="shrink-0">
               All services
             </ArrowLink>
@@ -123,38 +111,24 @@ export default function HomePage() {
       {/* PROBLEMS — paper */}
       <section className="light py-20 sm:py-28" aria-labelledby="problems-heading">
         <div className="container-x">
-          <div className="grid gap-10 lg:grid-cols-[1fr_1.6fr]">
-            <div className="lg:sticky lg:top-28 lg:self-start">
-              <SectionHeading eyebrow="Problems we solve" title="Sound familiar?" description="Most projects start with a business problem, not a technology. Here is how we usually approach the common ones." />
-            </div>
-            <ol className="divide-y divide-line-dark border-y border-line-dark">
-              {problems.map((p, i) => {
-                const svc = services.find((s) => s.slug === p.service)!;
-                return (
-                  <Reveal key={p.problem} as="li" delay={i * 40} className="grid gap-4 py-8 sm:grid-cols-[3rem_1fr]">
-                    <span className="mono text-sm text-signal">0{i + 1}</span>
-                    <div>
-                      <p className="serif text-2xl leading-snug text-fg-dark sm:text-[1.75rem]">“{p.problem}”</p>
-                      <dl className="mt-5 grid gap-5 sm:grid-cols-2">
-                        <div>
-                          <dt className="mono text-[0.62rem] uppercase tracking-wider text-fg-dark-muted">What we build</dt>
-                          <dd className="mt-1 text-[0.95rem] leading-relaxed text-fg-dark">{p.solution}</dd>
-                        </div>
-                        <div>
-                          <dt className="mono text-[0.62rem] uppercase tracking-wider text-fg-dark-muted">Outcome</dt>
-                          <dd className="mt-1 text-[0.95rem] leading-relaxed text-fg-dark">{p.outcome}</dd>
-                        </div>
-                      </dl>
-                      <Link href={`/services/${svc.slug}`} className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-signal">
-                        {svc.navTitle}
-                        <ArrowRight />
-                      </Link>
-                    </div>
-                  </Reveal>
-                );
-              })}
-            </ol>
-          </div>
+          <SectionHeading eyebrow="Problems we solve" title="Sound familiar?" />
+          <Stagger as="ol" className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {problems.map((p, i) => {
+              const svc = services.find((s) => s.slug === p.service)!;
+              return (
+                <StaggerItem key={p.problem} as="li" className={i === problems.length - 1 ? "sm:col-span-2 lg:col-span-1" : ""}>
+                  <Link href={`/services/${svc.slug}`} className="card card-hover group flex h-full flex-col justify-between p-6 sm:p-7">
+                    <span className="mono text-xs text-signal">0{i + 1}</span>
+                    <p className="serif mt-10 text-2xl leading-snug text-fg-dark sm:text-[1.7rem]">“{p.problem}”</p>
+                    <span className="mt-8 inline-flex items-center gap-1.5 text-sm font-semibold text-signal">
+                      {svc.navTitle}
+                      <ArrowRight className="transition-transform group-hover:translate-x-1" />
+                    </span>
+                  </Link>
+                </StaggerItem>
+              );
+            })}
+          </Stagger>
         </div>
       </section>
 
@@ -162,7 +136,7 @@ export default function HomePage() {
       <section className="py-20 sm:py-28" aria-labelledby="work-heading">
         <div className="container-x">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-            <SectionHeading eyebrow="Selected work" title="Illustrative solutions that show how we think." description="Concept projects demonstrating our approach to architecture, interfaces, and integrations. Clearly labelled; no client metrics claimed." />
+            <SectionHeading eyebrow="Selected work" title="Concept projects that show how we think." />
             <ArrowLink href="/work" className="shrink-0">
               All work
             </ArrowLink>
@@ -179,7 +153,7 @@ export default function HomePage() {
       <section className="border-y border-line bg-ink-2/50 py-20 sm:py-28" aria-labelledby="process-heading">
         <div className="container-x">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-            <SectionHeading eyebrow="Development process" title="A clear path from idea to running software." description="Seven stages, each with defined deliverables, so you always know what you are getting and when." />
+            <SectionHeading eyebrow="Process" title="From idea to running software in seven stages." />
             <ArrowLink href="/process" className="shrink-0">
               Full process
             </ArrowLink>
@@ -188,11 +162,8 @@ export default function HomePage() {
             {processSteps.map((p, i) => (
               <Reveal key={p.step} as="li" delay={i * 40} className="bg-ink">
                 <div className="flex h-full flex-col p-6">
-                  <span className="serif text-4xl text-signal-bright">{p.step}</span>
-                  <h3 className="mt-4 text-lg font-semibold leading-snug">{p.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-fg-muted">{p.description}</p>
-                  <p className="mono mt-auto pt-5 text-[0.62rem] uppercase tracking-wider text-fg-subtle">You receive</p>
-                  <p className="mt-1 text-xs text-fg-muted">{p.deliverables.slice(0, 3).join(" · ")}</p>
+                  <span className="serif text-5xl text-signal-bright">{p.step}</span>
+                  <h3 className="mt-6 text-lg font-semibold leading-snug">{p.title}</h3>
                 </div>
               </Reveal>
             ))}
@@ -213,7 +184,7 @@ export default function HomePage() {
       <section className="py-20 sm:py-28" aria-labelledby="why-heading">
         <div className="container-x grid gap-12 lg:grid-cols-[1fr_1.4fr]">
           <div className="lg:sticky lg:top-28 lg:self-start">
-            <SectionHeading eyebrow="Why work with us" title="Practices you can hold us to." description="We would rather describe how we work than make claims we cannot prove. Every engagement includes these." />
+            <SectionHeading eyebrow="Why work with us" title="Practices you can hold us to." />
             <Link href="/about" className="btn btn-secondary mt-8">
               About the agency
             </Link>
@@ -225,10 +196,7 @@ export default function HomePage() {
                   <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-signal/20 text-signal-bright">
                     <Check className="h-3.5 w-3.5" />
                   </span>
-                  <div>
-                    <h3 className="text-sm font-semibold">{w.title}</h3>
-                    <p className="mt-1 text-sm text-fg-muted">{w.description}</p>
-                  </div>
+                  <h3 className="text-sm font-semibold">{w.title}</h3>
                 </div>
               </Reveal>
             ))}
@@ -239,8 +207,8 @@ export default function HomePage() {
       {/* FAQ */}
       <section className="border-t border-line py-20 sm:py-28" aria-labelledby="faq-heading">
         <div className="container-x grid gap-10 lg:grid-cols-[1fr_1.6fr]">
-          <SectionHeading eyebrow="FAQ" title="Questions we hear on most first calls." description="Timelines and pricing always depend on scope, integrations, and complexity — but here is how we think about the common questions." />
-          <Accordion items={faqs} />
+          <SectionHeading eyebrow="FAQ" title="Questions we hear on most first calls." />
+          <Accordion items={faqs.slice(0, 6)} />
         </div>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       </section>

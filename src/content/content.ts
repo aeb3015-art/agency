@@ -3,8 +3,7 @@
 export const heroContent = {
   eyebrow: "Software development agency",
   headline: "Websites, apps, and business systems. Engineered for growth.",
-  supporting:
-    "We build high-performance websites, mobile applications, custom CRM platforms, and connected backend systems that help businesses launch faster, operate smarter, and scale confidently.",
+  supporting: "High-performance websites, mobile apps, custom CRMs and connected backend systems — built to launch faster and scale confidently.",
   primaryCta: { label: "Start Your Project", href: "/contact" },
   secondaryCta: { label: "Explore Our Services", href: "/services" },
   capabilityLabels: ["Full-Stack Development", "iOS & Android", "Custom CRM", "API Engineering", "Cloud Deployment"],

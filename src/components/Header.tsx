@@ -100,7 +100,7 @@ export function Header() {
         aria-hidden="true"
         className={`absolute inset-0 -z-10 transition-[background,border-color,box-shadow] duration-300 ${
           scrolled || mobileOpen
-            ? "bg-[rgba(11,12,16,0.8)] backdrop-blur-xl border-b border-line shadow-[0_10px_40px_-20px_rgba(0,0,0,0.7)]"
+            ? "bg-[rgba(11,12,16,0.8)] backdrop-blur-md border-b border-line shadow-[0_10px_40px_-20px_rgba(0,0,0,0.7)]"
             : "bg-transparent border-b border-transparent"
         }`}
       />
