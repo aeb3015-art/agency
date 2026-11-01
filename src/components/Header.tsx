@@ -6,10 +6,12 @@ import { useEffect, useId, useRef, useState } from "react";
 import { mainNav, siteConfig } from "@/content/site";
 import { services } from "@/content/services";
 import { Chevron, Logo, ServiceIcon } from "./Icons";
+import { useScrollDirection } from "./motion";
 
 export function Header() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+  const hiddenByScroll = useScrollDirection();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
@@ -92,6 +94,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50">
+      <div className={`transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${hiddenByScroll && !mobileOpen && !servicesOpen ? "-translate-y-full" : "translate-y-0"}`}>
       {/* Blur lives on an inner element: a backdrop-filter on <header> would become the containing block for the fixed mobile panel. */}
       <div
         aria-hidden="true"
@@ -210,7 +213,9 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      </div>
+
+      {/* Mobile menu (sibling of the transformed bar so position:fixed uses the viewport) */}
       <div
         id={menuId}
         ref={mobilePanelRef}

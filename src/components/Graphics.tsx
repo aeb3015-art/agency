@@ -1,4 +1,7 @@
+"use client";
+
 /* Product-grade visuals built with HTML/CSS/SVG. Decorative (aria-hidden) with text equivalents nearby. */
+import { CountUp, Enter, Parallax, Tilt, TypedLines } from "./motion";
 
 /* ---------- Shared window chrome ---------- */
 function Window({ title, children, className = "", tone = "dark" }: { title: string; children: React.ReactNode; className?: string; tone?: "dark" | "paper" }) {
@@ -80,13 +83,13 @@ export function DashboardPanel({ className = "" }: { className?: string }) {
     <Window title="ops.example.com/pipeline" className={className}>
       <div className="grid grid-cols-3 gap-px border-b border-line bg-line">
         {[
-          ["Pipeline value", "$184.6k", "+12.4%"],
-          ["Won this month", "$27.9k", "+3 deals"],
-          ["Avg. cycle", "23 days", "−4 days"],
-        ].map(([l, v, d]) => (
+          { l: "Pipeline value", d: "+12.4%", v: <CountUp to={184.6} prefix="$" suffix="k" decimals={1} /> },
+          { l: "Won this month", d: "+3 deals", v: <CountUp to={27.9} prefix="$" suffix="k" decimals={1} /> },
+          { l: "Avg. cycle", d: "−4 days", v: <CountUp to={23} suffix=" days" /> },
+        ].map(({ l, v, d }) => (
           <div key={l} className="bg-ink-2 p-3">
             <div className="mono text-[0.58rem] uppercase tracking-wider text-fg-subtle">{l}</div>
-            <div className="mt-1 text-base font-semibold tracking-tight">{v}</div>
+            <div className="mt-1 text-base font-semibold tracking-tight tabular-nums">{v}</div>
             <div className="mono text-[0.6rem] text-mint">{d}</div>
           </div>
         ))}
@@ -122,14 +125,17 @@ export function DashboardPanel({ className = "" }: { className?: string }) {
 export function TerminalPanel({ className = "" }: { className?: string }) {
   return (
     <Window title="deploy · production" className={className}>
-      <pre className="mono p-4 text-[0.7rem] leading-[1.75] text-fg-muted">
-        <div><span className="text-mint">✓</span> lint &amp; typecheck <span className="text-fg-subtle">1.8s</span></div>
-        <div><span className="text-mint">✓</span> tests 212 passed <span className="text-fg-subtle">14.2s</span></div>
-        <div><span className="text-mint">✓</span> build image <span className="text-fg-subtle">api@sha-7f3c1</span></div>
-        <div><span className="text-mint">✓</span> migrate <span className="text-fg-subtle">0003_add_audit_log</span></div>
-        <div><span className="text-signal-bright">→</span> rolling out <span className="text-fg">3/3</span> healthy</div>
-        <div><span className="text-amber">●</span> p95 latency <span className="text-fg">84ms</span></div>
-      </pre>
+      <TypedLines
+        className="mono p-4 text-[0.7rem] leading-[1.75] text-fg-muted"
+        lines={[
+          <><span className="text-mint">✓</span> lint &amp; typecheck <span className="text-fg-subtle">1.8s</span></>,
+          <><span className="text-mint">✓</span> tests 212 passed <span className="text-fg-subtle">14.2s</span></>,
+          <><span className="text-mint">✓</span> build image <span className="text-fg-subtle">api@sha-7f3c1</span></>,
+          <><span className="text-mint">✓</span> migrate <span className="text-fg-subtle">0003_add_audit_log</span></>,
+          <><span className="text-signal-bright">→</span> rolling out <span className="text-fg">3/3</span> healthy</>,
+          <><span className="text-amber">●</span> p95 latency <span className="text-fg">84ms</span></>,
+        ]}
+      />
     </Window>
   );
 }
@@ -256,14 +262,30 @@ export function HeroStack() {
   return (
     <div className="relative mx-auto w-full max-w-[40rem] lg:max-w-none" aria-hidden="true">
       <div className="absolute -inset-16 -z-10 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(47,107,255,0.28),transparent_62%)] blur-3xl" />
-      <div className="relative grid grid-cols-1 items-end gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:gap-6">
-        <div className="relative min-w-0 sm:pl-16 sm:pt-32 lg:pl-20 lg:pt-36">
-          <DashboardPanel className="relative z-10" />
-          <EditorPanel className="absolute -left-4 top-0 z-20 hidden w-[58%] sm:block lg:-left-8" />
-          <TerminalPanel className="absolute -bottom-10 -left-4 z-20 hidden w-[46%] sm:block lg:-left-8" />
+      <Tilt max={4}>
+        <div className="relative grid grid-cols-1 items-end gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:gap-6">
+          <div className="relative min-w-0 sm:pl-16 sm:pt-32 lg:pl-20 lg:pt-36">
+            <Enter delay={0.2} from={{ y: 60 }}>
+              <DashboardPanel className="relative z-10" />
+            </Enter>
+            <Enter delay={0.55} from={{ x: -40, y: 20, rotate: -2 }} className="absolute -left-4 top-0 z-20 hidden w-[58%] sm:block lg:-left-8">
+              <Parallax amount={-30}>
+                <EditorPanel />
+              </Parallax>
+            </Enter>
+            <Enter delay={0.8} from={{ x: -30, y: 40 }} className="absolute -bottom-10 -left-4 z-20 hidden w-[46%] sm:block lg:-left-8">
+              <Parallax amount={40}>
+                <TerminalPanel />
+              </Parallax>
+            </Enter>
+          </div>
+          <Enter delay={0.95} from={{ y: 80, rotate: 3 }} className="relative z-30 hidden sm:block sm:-mb-6">
+            <Parallax amount={-50}>
+              <PhonePanel className="float-slow" />
+            </Parallax>
+          </Enter>
         </div>
-        <PhonePanel className="relative z-30 hidden sm:block sm:-mb-6 float-slow" />
-      </div>
+      </Tilt>
       {/* connection lines */}
       <svg className="absolute inset-0 -z-[1] h-full w-full" viewBox="0 0 600 400" fill="none" preserveAspectRatio="none">
         <path d="M60 60 C 200 60, 220 200, 380 200 S 560 340, 590 340" stroke="rgba(107,149,255,0.35)" strokeWidth="1.5" className="flow-line" />
@@ -337,10 +359,12 @@ export function ArchitectureDiagram({ nodes }: { nodes: string[] }) {
     <ol className="flex flex-wrap items-stretch gap-3">
       {nodes.map((n, i) => (
         <li key={n} className="flex items-center gap-3">
+          <Enter delay={i * 0.12} from={{ y: 16 }} className="contents">
           <span className="mono rounded-lg border border-line-strong bg-ink-2 px-3 py-2.5 text-xs text-fg sm:text-sm">
             <span className="mr-2 text-signal-bright">{String(i + 1).padStart(2, "0")}</span>
             {n}
           </span>
+          </Enter>
           {i < nodes.length - 1 && (
             <svg width="22" height="12" viewBox="0 0 22 12" fill="none" stroke="#6b95ff" strokeWidth="1.5" aria-hidden="true" className="shrink-0">
               <path d="M0 6h18M14 1l5 5-5 5" className="flow-line" />

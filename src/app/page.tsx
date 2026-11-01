@@ -5,6 +5,7 @@ import { caseStudies } from "@/content/case-studies";
 import { expertiseStrip, faqs, heroContent, problems, processSteps, whyUs } from "@/content/content";
 import { siteConfig } from "@/content/site";
 import { HeroStack } from "@/components/Graphics";
+import { Enter, Magnetic, SplitText, Stagger, StaggerItem } from "@/components/motion";
 import { Accordion, ArrowLink, Reveal, SectionHeading } from "@/components/ui";
 import { CaseCard, FinalCta, ServiceCard, TechStackSection } from "@/components/Sections";
 import { ArrowRight, Check } from "@/components/Icons";
@@ -30,21 +31,30 @@ export default function HomePage() {
         <div className="absolute inset-0 dotgrid" aria-hidden="true" />
         <div className="container-x relative grid min-w-0 items-center gap-16 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-10">
           <div className="relative z-10">
-            <p className="eyebrow">{heroContent.eyebrow}</p>
+            <Enter delay={0} from={{ y: 12 }}>
+              <p className="eyebrow">{heroContent.eyebrow}</p>
+            </Enter>
             <h1 id="hero-heading" className="mt-6 text-[2.9rem] font-semibold leading-[0.98] tracking-tight sm:text-6xl lg:text-[4.6rem]">
-              Websites, apps, and business systems.{" "}
-              <span className="serif-i text-signal-bright font-normal">Engineered</span> for growth.
+              <SplitText text="Websites, apps, and business systems." delay={0.1} stagger={0.06} />{" "}
+              <SplitText text="Engineered" className="serif-i text-signal-bright font-normal" delay={0.5} />{" "}
+              <SplitText text="for growth." delay={0.6} stagger={0.06} />
             </h1>
-            <p className="mt-7 max-w-xl text-lg leading-relaxed text-fg-muted sm:text-xl">{heroContent.supporting}</p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <Link href={heroContent.primaryCta.href} className="btn btn-primary">
-                {heroContent.primaryCta.label}
-                <ArrowRight />
-              </Link>
-              <Link href={heroContent.secondaryCta.href} className="btn btn-secondary">
-                {heroContent.secondaryCta.label}
-              </Link>
-            </div>
+            <Enter delay={0.75} from={{ y: 20 }}>
+              <p className="mt-7 max-w-xl text-lg leading-relaxed text-fg-muted sm:text-xl">{heroContent.supporting}</p>
+            </Enter>
+            <Enter delay={0.9} from={{ y: 20 }} className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <Magnetic>
+                <Link href={heroContent.primaryCta.href} className="btn btn-primary">
+                  {heroContent.primaryCta.label}
+                  <ArrowRight />
+                </Link>
+              </Magnetic>
+              <Magnetic>
+                <Link href={heroContent.secondaryCta.href} className="btn btn-secondary">
+                  {heroContent.secondaryCta.label}
+                </Link>
+              </Magnetic>
+            </Enter>
             <dl className="mt-12 grid max-w-md grid-cols-3 gap-6 border-t border-line pt-6">
               {[
                 ["Web", "React · Next.js"],
@@ -100,11 +110,13 @@ export default function HomePage() {
               All services
             </ArrowLink>
           </div>
-          <ul className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <Stagger as="ul" className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {services.map((s, i) => (
-              <ServiceCard key={s.slug} service={s} index={i} />
+              <StaggerItem key={s.slug} as="li" className="h-full min-w-0">
+                <ServiceCard service={s} index={i} bare />
+              </StaggerItem>
             ))}
-          </ul>
+          </Stagger>
         </div>
       </section>
 

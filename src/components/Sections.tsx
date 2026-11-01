@@ -5,10 +5,13 @@ import { finalCta, techStack } from "@/content/content";
 import { ArrowRight, ServiceIcon } from "./Icons";
 import { Pill, Reveal, SectionHeading } from "./ui";
 import { DashboardPanel, PhonePanel, StorefrontPanel } from "./Graphics";
+import { Magnetic, SplitText, Spotlight } from "./motion";
 
-export function ServiceCard({ service, index = 0, featured = false }: { service: Service; index?: number; featured?: boolean }) {
+export function ServiceCard({ service, index = 0, featured = false, bare = false }: { service: Service; index?: number; featured?: boolean; bare?: boolean }) {
+  const Wrap = bare ? ({ children }: { children: React.ReactNode }) => <>{children}</> : ({ children }: { children: React.ReactNode }) => <Reveal as="li" delay={index * 60} className={`h-full min-w-0 ${featured ? "md:col-span-2" : ""}`}>{children}</Reveal>;
   return (
-    <Reveal as="li" delay={index * 60} className={`h-full min-w-0 ${featured ? "md:col-span-2" : ""}`}>
+    <Wrap>
+      <Spotlight className="h-full rounded-[var(--radius-lg)]">
       <Link href={`/services/${service.slug}`} className="card card-hover group relative flex h-full flex-col overflow-hidden p-6 sm:p-7">
         <span className="mono absolute right-6 top-6 text-[0.65rem] text-fg-subtle">0{index + 1}</span>
         <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-line bg-ink-3 text-signal-bright">
@@ -28,7 +31,8 @@ export function ServiceCard({ service, index = 0, featured = false }: { service:
           <ArrowRight className="transition-transform group-hover:translate-x-1" />
         </span>
       </Link>
-    </Reveal>
+      </Spotlight>
+    </Wrap>
   );
 }
 
@@ -106,13 +110,17 @@ export function FinalCta({ headline = finalCta.headline, supporting = finalCta.s
           </h2>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-fg-muted">{supporting}</p>
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Link href={cta.href} className="btn btn-primary">
-              {cta.label}
-              <ArrowRight />
-            </Link>
-            <Link href="/process" className="btn btn-secondary">
-              See how we work
-            </Link>
+            <Magnetic>
+              <Link href={cta.href} className="btn btn-primary">
+                {cta.label}
+                <ArrowRight />
+              </Link>
+            </Magnetic>
+            <Magnetic>
+              <Link href="/process" className="btn btn-secondary">
+                See how we work
+              </Link>
+            </Magnetic>
           </div>
         </Reveal>
       </div>
@@ -126,9 +134,17 @@ export function PageHero({ eyebrow, title, description, children }: { eyebrow: s
       <div className="absolute inset-x-0 top-0 h-[28rem] bg-[radial-gradient(ellipse_at_top_left,rgba(47,107,255,0.16),transparent_60%)]" aria-hidden="true" />
       <div className="container-x relative">
         <div className="max-w-3xl">
-          <p className="eyebrow">{eyebrow}</p>
-          <h1 className="mt-5 text-[2.75rem] font-semibold leading-[1.02] tracking-tight sm:text-6xl lg:text-[4.25rem]">{title}</h1>
-          {description && <p className="mt-6 text-lg leading-relaxed text-fg-muted sm:text-xl">{description}</p>}
+          <Reveal>
+            <p className="eyebrow">{eyebrow}</p>
+          </Reveal>
+          <h1 className="mt-5 text-[2.75rem] font-semibold leading-[1.02] tracking-tight sm:text-6xl lg:text-[4.25rem]">
+            <SplitText text={title} delay={0.1} />
+          </h1>
+          {description && (
+            <Reveal delay={400}>
+              <p className="mt-6 text-lg leading-relaxed text-fg-muted sm:text-xl">{description}</p>
+            </Reveal>
+          )}
         </div>
         {children}
       </div>

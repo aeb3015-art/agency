@@ -265,6 +265,45 @@ h1 {
   cursor: not-allowed;
 }
 
+/* Spotlight cards */
+.spotlight {
+  position: relative;
+}
+.spotlight > * {
+  position: relative;
+}
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity var(--duration-base);
+  background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), rgba(107, 149, 255, 0.16), transparent 55%);
+}
+.spotlight:hover::before {
+  opacity: 1;
+}
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  html {
+    cursor: none;
+  }
+  a, button, input, select, textarea, label {
+    cursor: none;
+  }
+}
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
 /* Rules & dots */
 .rule {
   height: 1px;

@@ -1,37 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { useId, useState, type ReactNode } from "react";
+import { FadeIn, SplitText } from "./motion";
 import { ArrowRight, Chevron } from "./Icons";
 
-/* ---------- Reveal on scroll ---------- */
-export function Reveal({ children, className = "", delay = 0, as: Tag = "div" }: { children: ReactNode; className?: string; delay?: number; as?: "div" | "section" | "li" | "article" }) {
-  const ref = useRef<HTMLElement>(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (!("IntersectionObserver" in window)) {
-      setVisible(true);
-      return;
-    }
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setVisible(true);
-          io.disconnect();
-        }
-      },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-  const Comp = Tag as "div";
+/* ---------- Reveal on scroll (motion) ---------- */
+export function Reveal({ children, className = "", delay = 0, as = "div" }: { children: ReactNode; className?: string; delay?: number; as?: "div" | "section" | "li" | "article" }) {
   return (
-    <Comp ref={ref as React.RefObject<HTMLDivElement>} className={`reveal ${visible ? "is-visible" : ""} ${className}`} style={delay ? { transitionDelay: `${delay}ms` } : undefined}>
+    <FadeIn as={as} className={className} delay={delay / 1000}>
       {children}
-    </Comp>
+    </FadeIn>
   );
 }
 
@@ -39,9 +18,19 @@ export function Reveal({ children, className = "", delay = 0, as: Tag = "div" }:
 export function SectionHeading({ eyebrow, title, description, align = "left", className = "" }: { eyebrow?: string; title: string; description?: string; align?: "left" | "center"; className?: string }) {
   return (
     <div className={`${align === "center" ? "mx-auto text-center" : ""} max-w-2xl ${className}`}>
-      {eyebrow && <p className="eyebrow">{eyebrow}</p>}
-      <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl lg:text-[2.9rem] lg:leading-[1.05]">{title}</h2>
-      {description && <p className="mt-4 text-lg text-muted">{description}</p>}
+      {eyebrow && (
+        <FadeIn as="p" className="eyebrow" y={10}>
+          {eyebrow}
+        </FadeIn>
+      )}
+      <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl lg:text-[2.9rem] lg:leading-[1.05]">
+        <SplitText text={title} delay={0.05} />
+      </h2>
+      {description && (
+        <FadeIn as="p" className="mt-4 text-lg text-muted" delay={0.25} y={16}>
+          {description}
+        </FadeIn>
+      )}
     </div>
   );
 }
