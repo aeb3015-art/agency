@@ -40,7 +40,7 @@ export function SectionHeading({ eyebrow, title, description, align = "left", cl
   return (
     <div className={`${align === "center" ? "mx-auto text-center" : ""} max-w-2xl ${className}`}>
       {eyebrow && <p className="eyebrow">{eyebrow}</p>}
-      <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl lg:text-[2.6rem] lg:leading-[1.1]">{title}</h2>
+      <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl lg:text-[2.9rem] lg:leading-[1.05]">{title}</h2>
       {description && <p className="mt-4 text-lg text-muted">{description}</p>}
     </div>
   );
@@ -58,7 +58,7 @@ export function Accordion({ items, singleOpen = true }: { items: { question: str
       return next;
     });
   return (
-    <div className="divide-y divide-line rounded-xl border border-line bg-white/[0.02]">
+    <div className="divide-y divide-line rounded-xl border border-line bg-ink-2/60">
       {items.map((item, i) => {
         const isOpen = open.has(i);
         const btnId = `${baseId}-b-${i}`;
@@ -75,7 +75,7 @@ export function Accordion({ items, singleOpen = true }: { items: { question: str
                 className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left text-base font-semibold text-fg hover:bg-white/[0.03] sm:px-6"
               >
                 {item.question}
-                <Chevron className={`shrink-0 text-cyan transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
+                <Chevron className={`shrink-0 text-signal-bright transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
               </button>
             </h3>
             <div id={panelId} role="region" aria-labelledby={btnId} className="accordion-panel" data-open={isOpen}>
@@ -93,7 +93,7 @@ export function Accordion({ items, singleOpen = true }: { items: { question: str
 /* ---------- Link with arrow ---------- */
 export function ArrowLink({ href, children, className = "" }: { href: string; children: ReactNode; className?: string }) {
   return (
-    <Link href={href} className={`group inline-flex items-center gap-1.5 text-sm font-semibold text-cyan ${className}`}>
+    <Link href={href} className={`group inline-flex items-center gap-1.5 text-sm font-semibold text-fg hover:text-signal-bright ${className}`}>
       {children}
       <ArrowRight className="transition-transform duration-200 group-hover:translate-x-0.5" />
     </Link>
@@ -104,8 +104,8 @@ export function ArrowLink({ href, children, className = "" }: { href: string; ch
 export function Pill({ children, tone = "default" }: { children: ReactNode; tone?: "default" | "accent" | "warn" }) {
   const tones = {
     default: "border-line text-fg-muted bg-white/[0.03]",
-    accent: "border-cyan/40 text-cyan bg-cyan/10",
-    warn: "border-violet/40 text-violet bg-violet/10",
+    accent: "border-signal/50 text-signal-bright bg-signal/15",
+    warn: "border-amber/50 text-amber bg-amber/10",
   };
   return <span className={`mono inline-flex items-center rounded-full border px-2.5 py-1 text-[0.7rem] tracking-wide ${tones[tone]}`}>{children}</span>;
 }

@@ -89,13 +89,13 @@ export function Logo({ className }: { className?: string }) {
     <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true" className={className}>
       <defs>
         <linearGradient id="lg" x1="0" y1="0" x2="32" y2="32">
-          <stop stopColor="#67e8f9" />
-          <stop offset="1" stopColor="#60a5fa" />
+          <stop stopColor="#6b95ff" />
+          <stop offset="1" stopColor="#2f6bff" />
         </linearGradient>
       </defs>
       <rect x="1.5" y="1.5" width="29" height="29" rx="8" stroke="url(#lg)" strokeWidth="1.5" />
       <path d="M9 22L16 9l7 13" stroke="url(#lg)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M12 18h8" stroke="#a78bfa" strokeWidth="2.2" strokeLinecap="round" />
+      <path d="M12 18h8" stroke="#f5b64a" strokeWidth="2.2" strokeLinecap="round" />
     </svg>
   );
 }

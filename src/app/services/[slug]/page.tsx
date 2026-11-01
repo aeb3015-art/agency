@@ -42,7 +42,7 @@ export default async function ServicePage({ params }: Params) {
     <>
       <section className="relative overflow-hidden pt-16 pb-14 sm:pt-24 sm:pb-20">
         <div className="absolute inset-x-0 top-0 h-[30rem] bg-[radial-gradient(ellipse_at_top_left,rgba(59,130,246,0.18),transparent_60%)]" aria-hidden="true" />
-        <div className="container-x relative grid items-center gap-12 lg:grid-cols-[1.1fr_1fr]">
+        <div className="container-x relative grid items-center gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
           <div>
             <nav aria-label="Breadcrumb" className="mono text-xs text-fg-subtle">
               <Link href="/services" className="hover:text-fg">
@@ -65,7 +65,7 @@ export default async function ServicePage({ params }: Params) {
               </Link>
             </div>
           </div>
-          <div className="lg:pl-6">
+          <div className="min-w-0 lg:pl-6">
             <ServiceVisual kind={s.visual} />
           </div>
         </div>
@@ -95,8 +95,8 @@ export default async function ServicePage({ params }: Params) {
           <div className="mt-12 grid gap-8 lg:grid-cols-2">
             {s.practices.map((g, gi) => (
               <Reveal key={g.group} delay={gi * 60} className="card p-6">
-                <h3 className="mono text-xs uppercase tracking-wider text-[#0e7490]">{g.group}</h3>
-                <dl className="mt-4 divide-y divide-[rgba(13,19,34,0.08)]">
+                <h3 className="mono text-xs uppercase tracking-wider text-[#2f6bff]">{g.group}</h3>
+                <dl className="mt-4 divide-y divide-[rgba(18,18,18,0.1)]">
                   {g.items.map((it) => (
                     <div key={it.term} className="grid gap-1 py-3 sm:grid-cols-[11rem_1fr] sm:gap-4">
                       <dt className="text-sm font-semibold text-fg-dark">{it.term}</dt>
@@ -108,7 +108,7 @@ export default async function ServicePage({ params }: Params) {
             ))}
           </div>
           {s.note && (
-            <p className="mx-auto mt-10 max-w-3xl rounded-lg border border-[rgba(13,19,34,0.1)] bg-white p-5 text-sm leading-relaxed text-fg-dark-muted">
+            <p className="mx-auto mt-10 max-w-3xl rounded-lg border border-[rgba(18,18,18,0.12)] bg-white p-5 text-sm leading-relaxed text-fg-dark-muted">
               <span className="font-semibold text-fg-dark">Note: </span>
               {s.note}
             </p>

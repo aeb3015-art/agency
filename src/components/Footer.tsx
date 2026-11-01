@@ -7,7 +7,7 @@ export function Footer() {
   const year = new Date().getFullYear();
   const { contact, links } = siteConfig;
   return (
-    <footer className="border-t border-line bg-bg-elev/40">
+    <footer className="border-t border-line bg-ink-2/60">
       <div className="container-x py-14">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
@@ -17,11 +17,11 @@ export function Footer() {
             </Link>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-fg-muted">{siteConfig.tagline}</p>
             <div className="mt-5 flex flex-col gap-1.5 text-sm">
-              <a href={`mailto:${contact.email}`} className="text-fg hover:text-cyan">
+              <a href={`mailto:${contact.email}`} className="text-fg hover:text-signal-bright">
                 {contact.email}
               </a>
               {contact.phone && (
-                <a href={`tel:${contact.phone.replace(/\s/g, "")}`} className="text-fg hover:text-cyan">
+                <a href={`tel:${contact.phone.replace(/\s/g, "")}`} className="text-fg hover:text-signal-bright">
                   {contact.phone}
                 </a>
               )}

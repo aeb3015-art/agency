@@ -1,285 +1,348 @@
-/* Engineering-inspired visuals built with HTML/CSS/SVG. All are decorative (aria-hidden) with text equivalents nearby. */
+/* Product-grade visuals built with HTML/CSS/SVG. Decorative (aria-hidden) with text equivalents nearby. */
 
-const nodeBase = "rounded-lg border border-line bg-bg-elev/90 px-3 py-2 text-center shadow-card";
-
-/* ---------- Hero: connected system diagram ---------- */
-export function SystemDiagram() {
-  const nodes = [
-    { label: "Website", sub: "Next.js", x: 40, y: 40 },
-    { label: "API Layer", sub: "REST / GraphQL", x: 230, y: 40 },
-    { label: "Backend Services", sub: "Node / Python", x: 420, y: 40 },
-    { label: "Database", sub: "PostgreSQL", x: 420, y: 180 },
-    { label: "CRM", sub: "Custom platform", x: 230, y: 180 },
-    { label: "Mobile App", sub: "Flutter", x: 40, y: 180 },
-  ];
-  const links: [number, number][] = [
-    [0, 1],
-    [1, 2],
-    [2, 3],
-    [3, 4],
-    [4, 5],
-    [5, 1],
-  ];
-  const w = 160;
-  const h = 64;
-  const center = (i: number) => ({ cx: nodes[i].x + w / 2, cy: nodes[i].y + h / 2 });
+/* ---------- Shared window chrome ---------- */
+function Window({ title, children, className = "", tone = "dark" }: { title: string; children: React.ReactNode; className?: string; tone?: "dark" | "paper" }) {
+  const dark = tone === "dark";
   return (
-    <div className="relative" aria-hidden="true">
-      <div className="absolute -inset-10 rounded-[3rem] bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.22),transparent_65%)] blur-2xl" />
-      <svg viewBox="0 0 620 284" className="relative w-full h-auto" role="img">
-        <defs>
-          <linearGradient id="link" x1="0" x2="1">
-            <stop offset="0" stopColor="#22d3ee" />
-            <stop offset="1" stopColor="#60a5fa" />
-          </linearGradient>
-          <filter id="glow">
-            <feGaussianBlur stdDeviation="2.5" result="b" />
-            <feMerge>
-              <feMergeNode in="b" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        </defs>
-        {links.map(([a, b], i) => {
-          const A = center(a);
-          const B = center(b);
-          return (
-            <g key={i}>
-              <line x1={A.cx} y1={A.cy} x2={B.cx} y2={B.cy} stroke="rgba(167,177,196,0.18)" strokeWidth="2" />
-              <line x1={A.cx} y1={A.cy} x2={B.cx} y2={B.cy} stroke="url(#link)" strokeWidth="2" className="flow-line" style={{ animationDelay: `${i * 0.3}s` }} />
-            </g>
-          );
-        })}
-        {nodes.map((n, i) => (
-          <g key={n.label} transform={`translate(${n.x} ${n.y})`}>
-            <rect width={w} height={h} rx="12" fill="#0c1220" stroke="rgba(167,177,196,0.28)" />
-            <rect width={w} height={h} rx="12" fill="none" stroke="#60a5fa" strokeOpacity="0.35" filter="url(#glow)" className="pulse-soft" style={{ animationDelay: `${i * 0.45}s` }} />
-            <circle cx="18" cy="20" r="4" fill={i % 2 ? "#22d3ee" : "#a78bfa"} />
-            <text x="30" y="24" fill="#eef2f8" fontSize="13" fontWeight="600" fontFamily="Inter, system-ui, sans-serif">
-              {n.label}
-            </text>
-            <text x="30" y="44" fill="#a7b1c4" fontSize="11" fontFamily="JetBrains Mono, monospace">
-              {n.sub}
-            </text>
-          </g>
+    <div className={`overflow-hidden rounded-xl border ${dark ? "border-line bg-ink-2 shadow-float" : "border-line-dark bg-white shadow-paper"} ${className}`}>
+      <div className={`flex items-center gap-2 border-b px-3.5 py-2.5 ${dark ? "border-line" : "border-line-dark"}`}>
+        <span className="h-2.5 w-2.5 rounded-full bg-rose/80" />
+        <span className="h-2.5 w-2.5 rounded-full bg-amber/80" />
+        <span className="h-2.5 w-2.5 rounded-full bg-mint/80" />
+        <span className={`mono ml-2 text-[0.65rem] ${dark ? "text-fg-subtle" : "text-fg-dark-muted"}`}>{title}</span>
+      </div>
+      {children}
+    </div>
+  );
+}
+
+/* ---------- Code editor ---------- */
+export function EditorPanel({ className = "" }: { className?: string }) {
+  const K = ({ c }: { c: string }) => <span className="text-[#c792ea]">{c}</span>;
+  const F = ({ c }: { c: string }) => <span className="text-signal-bright">{c}</span>;
+  const S = ({ c }: { c: string }) => <span className="text-mint">{c}</span>;
+  const T = ({ c }: { c: string }) => <span className="text-amber">{c}</span>;
+  const C = ({ c }: { c: string }) => <span className="text-fg-subtle italic">{c}</span>;
+  const lines: React.ReactNode[] = [
+    <><K c="export async function" /> <F c="createOrder" />(input: <T c="OrderInput" />) {"{"}</>,
+    <>  <K c="const" /> order = <K c="await" /> db.<F c="transaction" />(<K c="async" /> (tx) =&gt; {"{"}</>,
+    <>    <K c="await" /> inventory.<F c="reserve" />(tx, input.items);</>,
+    <>    <K c="return" /> tx.orders.<F c="insert" />({"{"} ...input, status: <S c="'confirmed'" /> {"}"});</>,
+    <>  {"}"});</>,
+    <>  <C c="// publish for CRM, email and analytics consumers" /></>,
+    <>  <K c="await" /> events.<F c="emit" />(<S c="'order.created'" />, {"{"} id: order.id {"}"});</>,
+    <>  <K c="return" /> order;</>,
+    <>{"}"}<span className="cursor-blink ml-0.5 inline-block h-[1em] w-[2px] translate-y-[2px] bg-fg" /></>,
+  ];
+  return (
+    <Window title="orders/service.ts" className={className}>
+      <pre className="mono overflow-x-auto p-4 text-[0.72rem] leading-[1.7] text-fg-muted sm:text-[0.76rem]">
+        {lines.map((l, i) => (
+          <div key={i} className="flex">
+            <span className="w-6 shrink-0 select-none text-right pr-3 text-fg-subtle/60">{i + 1}</span>
+            <code>{l}</code>
+          </div>
         ))}
+      </pre>
+    </Window>
+  );
+}
+
+/* ---------- Analytics / dashboard ---------- */
+function AreaChart({ className = "" }: { className?: string }) {
+  const pts = [12, 18, 15, 24, 22, 30, 28, 36, 34, 44, 41, 52];
+  const w = 260;
+  const h = 70;
+  const path = pts.map((p, i) => `${(i / (pts.length - 1)) * w},${h - (p / 56) * h}`).join(" L ");
+  return (
+    <svg viewBox={`0 0 ${w} ${h}`} className={`w-full ${className}`} preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="area" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#2f6bff" stopOpacity="0.45" />
+          <stop offset="1" stopColor="#2f6bff" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <path d={`M 0,${h} L ${path} L ${w},${h} Z`} fill="url(#area)" />
+      <path d={`M ${path}`} fill="none" stroke="#6b95ff" strokeWidth="2" className="draw-line" />
+      <circle cx={w} cy={h - (52 / 56) * h} r="3.5" fill="#6b95ff" />
+    </svg>
+  );
+}
+
+export function DashboardPanel({ className = "" }: { className?: string }) {
+  const rows = [
+    ["Northwind Supply", "Proposal", "$42,000", "mint"],
+    ["Harbor Dental", "Qualified", "$18,500", "amber"],
+    ["Atlas Logistics", "Negotiation", "$96,200", "signal"],
+    ["Kestrel Studio", "Won", "$27,900", "mint"],
+  ];
+  return (
+    <Window title="ops.example.com/pipeline" className={className}>
+      <div className="grid grid-cols-3 gap-px border-b border-line bg-line">
+        {[
+          ["Pipeline value", "$184.6k", "+12.4%"],
+          ["Won this month", "$27.9k", "+3 deals"],
+          ["Avg. cycle", "23 days", "−4 days"],
+        ].map(([l, v, d]) => (
+          <div key={l} className="bg-ink-2 p-3">
+            <div className="mono text-[0.58rem] uppercase tracking-wider text-fg-subtle">{l}</div>
+            <div className="mt-1 text-base font-semibold tracking-tight">{v}</div>
+            <div className="mono text-[0.6rem] text-mint">{d}</div>
+          </div>
+        ))}
+      </div>
+      <div className="p-3">
+        <div className="mb-1 flex items-center justify-between">
+          <span className="mono text-[0.6rem] uppercase tracking-wider text-fg-subtle">Revenue · last 12 weeks</span>
+          <span className="mono text-[0.6rem] text-fg-subtle">weekly</span>
+        </div>
+        <AreaChart className="h-16" />
+      </div>
+      <table className="w-full border-t border-line text-[0.68rem]">
+        <tbody>
+          {rows.map(([n, st, v, tone]) => (
+            <tr key={n} className="border-b border-line last:border-0">
+              <td className="flex items-center gap-2 px-3 py-2">
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-ink-3 mono text-[0.55rem] text-fg-muted">{n[0]}</span>
+                <span className="font-medium">{n}</span>
+              </td>
+              <td className="px-3 py-2">
+                <span className={`rounded-full px-2 py-0.5 mono text-[0.58rem] ${tone === "mint" ? "bg-mint/15 text-mint" : tone === "amber" ? "bg-amber/15 text-amber" : "bg-signal/20 text-signal-bright"}`}>{st}</span>
+              </td>
+              <td className="px-3 py-2 text-right mono text-fg-muted">{v}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </Window>
+  );
+}
+
+/* ---------- Terminal / deploy log ---------- */
+export function TerminalPanel({ className = "" }: { className?: string }) {
+  return (
+    <Window title="deploy · production" className={className}>
+      <pre className="mono p-4 text-[0.7rem] leading-[1.75] text-fg-muted">
+        <div><span className="text-mint">✓</span> lint &amp; typecheck <span className="text-fg-subtle">1.8s</span></div>
+        <div><span className="text-mint">✓</span> tests 212 passed <span className="text-fg-subtle">14.2s</span></div>
+        <div><span className="text-mint">✓</span> build image <span className="text-fg-subtle">api@sha-7f3c1</span></div>
+        <div><span className="text-mint">✓</span> migrate <span className="text-fg-subtle">0003_add_audit_log</span></div>
+        <div><span className="text-signal-bright">→</span> rolling out <span className="text-fg">3/3</span> healthy</div>
+        <div><span className="text-amber">●</span> p95 latency <span className="text-fg">84ms</span></div>
+      </pre>
+    </Window>
+  );
+}
+
+/* ---------- Phone: booking app ---------- */
+export function PhonePanel({ className = "" }: { className?: string }) {
+  const days = ["M", "T", "W", "T", "F", "S", "S"];
+  return (
+    <div className={`w-[12.5rem] rounded-[2.2rem] border border-line-strong bg-ink-3 p-2 shadow-float ${className}`}>
+      <div className="relative overflow-hidden rounded-[1.75rem] bg-ink-2 px-4 pb-4 pt-5">
+        <div className="absolute left-1/2 top-2 h-4 w-16 -translate-x-1/2 rounded-full bg-ink" />
+        <div className="mt-3 flex items-center justify-between">
+          <div>
+            <div className="text-[0.55rem] text-fg-subtle">Book with</div>
+            <div className="text-sm font-semibold tracking-tight">Nadia · Stylist</div>
+          </div>
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-amber/20 text-[0.6rem] font-semibold text-amber">NK</div>
+        </div>
+        <div className="mt-4 grid grid-cols-7 gap-1 text-center">
+          {days.map((d, i) => (
+            <div key={i} className="mono text-[0.5rem] text-fg-subtle">{d}</div>
+          ))}
+          {Array.from({ length: 14 }).map((_, i) => (
+            <div key={i} className={`flex h-6 items-center justify-center rounded-md text-[0.6rem] ${i === 9 ? "bg-signal font-semibold text-white" : i < 2 ? "text-fg-subtle/40" : "bg-white/[0.04] text-fg-muted"}`}>
+              {i + 3}
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 space-y-1.5">
+          {[
+            ["09:00", "Open"],
+            ["10:30", "Selected"],
+            ["13:00", "Open"],
+          ].map(([t, s]) => (
+            <div key={t} className={`flex items-center justify-between rounded-lg border px-3 py-2 text-[0.65rem] ${s === "Selected" ? "border-signal/70 bg-signal/15 text-fg" : "border-line text-fg-muted"}`}>
+              <span className="mono">{t}</span>
+              <span className={s === "Selected" ? "text-signal-bright" : "text-fg-subtle"}>{s}</span>
+            </div>
+          ))}
+        </div>
+        <button type="button" tabIndex={-1} className="mt-4 w-full rounded-full bg-fg py-2.5 text-[0.7rem] font-semibold text-ink">
+          Confirm · $65
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- Storefront ---------- */
+export function StorefrontPanel({ className = "" }: { className?: string }) {
+  const products = [
+    ["Field Jacket", "$189", "from-[#3b4a6b] to-[#1d2538]"],
+    ["Trail Boot", "$240", "from-[#7a5a3a] to-[#3b2b1a]"],
+    ["Canvas Tote", "$58", "from-[#8c8a7a] to-[#4a493f]"],
+    ["Wool Beanie", "$42", "from-[#5b3a4a] to-[#2b1a24]"],
+    ["Down Vest", "$160", "from-[#2f6bff] to-[#1a2d66]"],
+    ["Rain Shell", "$210", "from-[#2d5a4a] to-[#132b22]"],
+  ];
+  return (
+    <Window title="shop.example.com/collections/outdoor" tone="paper" className={className}>
+      <div className="grid grid-cols-[6.5rem_1fr] gap-4 p-4 text-fg-dark">
+        <div className="space-y-3 text-[0.65rem]">
+          <div className="font-semibold">Filters</div>
+          {["Jackets", "Footwear", "Accessories"].map((f, i) => (
+            <label key={f} className="flex items-center gap-2 text-fg-dark-muted">
+              <span className={`h-3 w-3 rounded-sm border ${i === 0 ? "border-signal bg-signal" : "border-line-dark"}`} />
+              {f}
+            </label>
+          ))}
+          <div className="pt-2 font-semibold">Size</div>
+          <div className="flex flex-wrap gap-1">
+            {["S", "M", "L", "XL"].map((s) => (
+              <span key={s} className={`rounded px-1.5 py-0.5 mono text-[0.55rem] ${s === "M" ? "bg-fg-dark text-paper" : "border border-line-dark"}`}>{s}</span>
+            ))}
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-2.5">
+          {products.map(([n, p, g]) => (
+            <div key={n}>
+              <div className={`aspect-[4/5] rounded-md bg-gradient-to-br ${g}`} />
+              <div className="mt-1.5 text-[0.62rem] font-medium leading-tight">{n}</div>
+              <div className="mono text-[0.58rem] text-fg-dark-muted">{p}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </Window>
+  );
+}
+
+/* ---------- API request/response ---------- */
+export function ApiPreview({ compact = false, className = "" }: { compact?: boolean; className?: string }) {
+  const K = ({ c }: { c: string }) => <span className="text-signal-bright">&quot;{c}&quot;</span>;
+  const V = ({ c }: { c: string }) => <span className="text-mint">&quot;{c}&quot;</span>;
+  return (
+    <Window title="POST /v1/orders  ·  201 Created  ·  41ms" className={className}>
+      <div className={`grid ${compact ? "" : "sm:grid-cols-2"} mono ${compact ? "text-[0.68rem]" : "text-[0.74rem]"} leading-relaxed text-fg-muted`}>
+        <pre className="overflow-x-auto p-4">
+          <div className="text-fg-subtle"># request</div>
+          <div><span className="text-amber">Authorization</span>: Bearer sk_live_…</div>
+          <div><span className="text-amber">Idempotency-Key</span>: 7f3c-91ab</div>
+          <div className="mt-2">{"{"}</div>
+          <div>  <K c="customer_id" />: <V c="cus_9a1" />,</div>
+          <div>  <K c="items" />: [{"{ "}<K c="sku" />: <V c="PL-220" />, <K c="qty" />: 2{" }"}],</div>
+          <div>  <K c="shipping" />: <V c="express" /></div>
+          <div>{"}"}</div>
+        </pre>
+        <pre className={`overflow-x-auto border-t border-line p-4 ${compact ? "" : "sm:border-l sm:border-t-0"}`}>
+          <div className="text-fg-subtle"># response</div>
+          <div>{"{"}</div>
+          <div>  <K c="id" />: <V c="ord_41c8" />,</div>
+          <div>  <K c="status" />: <V c="confirmed" />,</div>
+          <div>  <K c="total" />: {"{ "}<K c="amount" />: 8400, <K c="currency" />: <V c="EUR" />{" }"},</div>
+          <div>  <K c="events" />: [<V c="order.created" />]</div>
+          <div>{"}"}</div>
+        </pre>
+      </div>
+    </Window>
+  );
+}
+
+/* ---------- Hero composition ---------- */
+export function HeroStack() {
+  return (
+    <div className="relative mx-auto w-full max-w-[40rem] lg:max-w-none" aria-hidden="true">
+      <div className="absolute -inset-16 -z-10 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(47,107,255,0.28),transparent_62%)] blur-3xl" />
+      <div className="relative grid grid-cols-1 items-end gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:gap-6">
+        <div className="relative min-w-0 sm:pl-16 sm:pt-32 lg:pl-20 lg:pt-36">
+          <DashboardPanel className="relative z-10" />
+          <EditorPanel className="absolute -left-4 top-0 z-20 hidden w-[58%] sm:block lg:-left-8" />
+          <TerminalPanel className="absolute -bottom-10 -left-4 z-20 hidden w-[46%] sm:block lg:-left-8" />
+        </div>
+        <PhonePanel className="relative z-30 hidden sm:block sm:-mb-6 float-slow" />
+      </div>
+      {/* connection lines */}
+      <svg className="absolute inset-0 -z-[1] h-full w-full" viewBox="0 0 600 400" fill="none" preserveAspectRatio="none">
+        <path d="M60 60 C 200 60, 220 200, 380 200 S 560 340, 590 340" stroke="rgba(107,149,255,0.35)" strokeWidth="1.5" className="flow-line" />
       </svg>
     </div>
   );
 }
 
-/* ---------- Code / API preview ---------- */
-export function ApiPreview({ compact = false }: { compact?: boolean }) {
-  return (
-    <div className={`rounded-xl border border-line bg-bg-elev shadow-card overflow-hidden ${compact ? "text-[0.72rem]" : "text-[0.78rem]"} mono`} aria-hidden="true">
-      <div className="flex items-center gap-2 border-b border-line px-4 py-2.5 text-fg-subtle">
-        <span className="h-2.5 w-2.5 rounded-full bg-danger/70" />
-        <span className="h-2.5 w-2.5 rounded-full bg-violet/70" />
-        <span className="h-2.5 w-2.5 rounded-full bg-success/70" />
-        <span className="ml-3">POST /v1/orders</span>
-        <span className="ml-auto rounded bg-success/15 px-2 py-0.5 text-success">201 Created</span>
-      </div>
-      <div className="grid gap-0 sm:grid-cols-2">
-        <pre className="overflow-x-auto p-4 leading-relaxed text-fg-muted">
-          <code>
-            <span className="text-fg-subtle"># request</span>
-            {"\n"}
-            <span className="text-violet">Authorization</span>: Bearer sk_…{"\n"}
-            <span className="text-violet">Idempotency-Key</span>: 7f3c…{"\n\n"}
-            {"{\n"}
-            {"  "}
-            <span className="text-cyan">&quot;customer_id&quot;</span>: <span className="text-blue-bright">&quot;cus_9a1&quot;</span>,{"\n"}
-            {"  "}
-            <span className="text-cyan">&quot;items&quot;</span>: [{"{ "}
-            <span className="text-cyan">&quot;sku&quot;</span>: <span className="text-blue-bright">&quot;PL-220&quot;</span>, <span className="text-cyan">&quot;qty&quot;</span>: 2{" }"}],{"\n"}
-            {"  "}
-            <span className="text-cyan">&quot;shipping&quot;</span>: <span className="text-blue-bright">&quot;express&quot;</span>
-            {"\n}"}
-          </code>
-        </pre>
-        <pre className="overflow-x-auto border-t border-line p-4 leading-relaxed text-fg-muted sm:border-l sm:border-t-0">
-          <code>
-            <span className="text-fg-subtle"># response</span>
-            {"\n"}
-            {"{\n"}
-            {"  "}
-            <span className="text-cyan">&quot;id&quot;</span>: <span className="text-blue-bright">&quot;ord_41c8&quot;</span>,{"\n"}
-            {"  "}
-            <span className="text-cyan">&quot;status&quot;</span>: <span className="text-blue-bright">&quot;confirmed&quot;</span>,{"\n"}
-            {"  "}
-            <span className="text-cyan">&quot;total&quot;</span>: {"{ "}
-            <span className="text-cyan">&quot;amount&quot;</span>: 8400, <span className="text-cyan">&quot;currency&quot;</span>: <span className="text-blue-bright">&quot;EUR&quot;</span>
-            {" }"},{"\n"}
-            {"  "}
-            <span className="text-cyan">&quot;events&quot;</span>: [<span className="text-blue-bright">&quot;order.created&quot;</span>]{"\n"}
-            {"}"}
-          </code>
-        </pre>
-      </div>
-    </div>
-  );
-}
-
-/* ---------- Browser mockup: e-commerce ---------- */
-export function EcommerceMock() {
-  return (
-    <div className="rounded-xl border border-line bg-bg-elev shadow-card overflow-hidden" aria-hidden="true">
-      <div className="flex items-center gap-2 border-b border-line px-3 py-2">
-        <span className="h-2 w-2 rounded-full bg-fg-subtle/60" />
-        <span className="h-2 w-2 rounded-full bg-fg-subtle/60" />
-        <span className="ml-2 h-5 flex-1 rounded bg-white/[0.04] mono text-[0.6rem] leading-5 px-2 text-fg-subtle">shop.example.com/collections/outdoor</span>
-      </div>
-      <div className="grid grid-cols-[1fr_2fr] gap-3 p-3">
-        <div className="space-y-2">
-          <div className="h-3 w-3/4 rounded bg-fg/20" />
-          {[80, 60, 70, 50].map((w, i) => (
-            <div key={i} className="h-2 rounded bg-fg/10" style={{ width: `${w}%` }} />
-          ))}
-          <div className="pt-2 h-2 w-2/3 rounded bg-cyan/50" />
-        </div>
-        <div className="grid grid-cols-3 gap-2">
-          {[0, 1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="rounded-md border border-line bg-white/[0.02] p-1.5">
-              <div className={`h-10 rounded ${["bg-blue/30", "bg-cyan/25", "bg-violet/30"][i % 3]}`} />
-              <div className="mt-1.5 h-1.5 w-3/4 rounded bg-fg/20" />
-              <div className="mt-1 h-1.5 w-1/3 rounded bg-fg/10" />
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ---------- Dashboard mockup: CRM ---------- */
-export function CrmMock() {
-  const stages = [
-    { label: "New", n: 4, c: "bg-fg/15" },
-    { label: "Qualified", n: 3, c: "bg-blue/30" },
-    { label: "Proposal", n: 2, c: "bg-cyan/30" },
-    { label: "Won", n: 1, c: "bg-success/30" },
+/* ---------- Connected system diagram (services page / about) ---------- */
+export function SystemDiagram() {
+  const nodes = [
+    { label: "Website", sub: "Next.js", x: 20, y: 20 },
+    { label: "API Layer", sub: "REST / GraphQL", x: 220, y: 20 },
+    { label: "Backend", sub: "Node / Python", x: 420, y: 20 },
+    { label: "Database", sub: "PostgreSQL", x: 420, y: 160 },
+    { label: "CRM", sub: "Custom platform", x: 220, y: 160 },
+    { label: "Mobile App", sub: "Flutter", x: 20, y: 160 },
   ];
+  const links: [number, number][] = [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 1]];
+  const w = 160, h = 64;
+  const c = (i: number) => ({ x: nodes[i].x + w / 2, y: nodes[i].y + h / 2 });
   return (
-    <div className="rounded-xl border border-line bg-bg-elev shadow-card overflow-hidden" aria-hidden="true">
-      <div className="flex items-center justify-between border-b border-line px-3 py-2">
-        <div className="flex gap-3">
-          <span className="h-2 w-10 rounded bg-fg/30" />
-          <span className="h-2 w-8 rounded bg-fg/10" />
-          <span className="h-2 w-8 rounded bg-fg/10" />
-        </div>
-        <span className="h-4 w-4 rounded-full bg-violet/40" />
-      </div>
-      <div className="grid grid-cols-3 gap-2 p-3">
-        {["Pipeline", "Won this month", "Tasks due"].map((t, i) => (
-          <div key={t} className="rounded-md border border-line bg-white/[0.02] p-2">
-            <div className="mono text-[0.55rem] text-fg-subtle">{t}</div>
-            <div className={`mt-1 h-3 rounded ${["w-3/4 bg-cyan/50", "w-1/2 bg-success/50", "w-2/3 bg-violet/50"][i]}`} />
-          </div>
-        ))}
-      </div>
-      <div className="grid grid-cols-4 gap-2 px-3 pb-3">
-        {stages.map((s) => (
-          <div key={s.label}>
-            <div className="mono mb-1.5 text-[0.55rem] text-fg-subtle">{s.label}</div>
-            <div className="space-y-1.5">
-              {Array.from({ length: s.n }).map((_, i) => (
-                <div key={i} className={`h-6 rounded border border-line ${s.c}`} />
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/* ---------- Phone mockup: booking ---------- */
-export function PhoneMock() {
-  return (
-    <div className="mx-auto w-[11rem] rounded-[1.6rem] border border-line-strong bg-bg-elev p-2 shadow-card" aria-hidden="true">
-      <div className="rounded-[1.2rem] bg-bg p-3 overflow-hidden">
-        <div className="mx-auto mb-3 h-1 w-10 rounded bg-fg/20" />
-        <div className="h-2.5 w-2/3 rounded bg-fg/25" />
-        <div className="mt-1 h-2 w-1/2 rounded bg-fg/10" />
-        <div className="mt-3 grid grid-cols-7 gap-1">
-          {Array.from({ length: 14 }).map((_, i) => (
-            <div key={i} className={`h-5 rounded ${i === 9 ? "bg-cyan/70" : "bg-white/[0.05]"}`} />
-          ))}
-        </div>
-        <div className="mt-3 space-y-1.5">
-          {["09:00", "10:30", "13:00"].map((t, i) => (
-            <div key={t} className={`flex items-center justify-between rounded-md border px-2 py-1.5 mono text-[0.55rem] ${i === 1 ? "border-cyan/60 bg-cyan/10 text-cyan" : "border-line text-fg-subtle"}`}>
-              <span>{t}</span>
-              <span>{i === 1 ? "selected" : "open"}</span>
-            </div>
-          ))}
-        </div>
-        <div className="mt-3 h-7 rounded-full bg-gradient-to-r from-cyan to-blue-bright" />
-      </div>
-    </div>
+    <svg viewBox="0 0 600 244" className="w-full h-auto" aria-hidden="true">
+      {links.map(([a, b], i) => (
+        <line key={i} x1={c(a).x} y1={c(a).y} x2={c(b).x} y2={c(b).y} stroke="#6b95ff" strokeOpacity="0.5" strokeWidth="1.5" className="flow-line" style={{ animationDelay: `${i * 0.3}s` }} />
+      ))}
+      {nodes.map((n, i) => (
+        <g key={n.label} transform={`translate(${n.x} ${n.y})`}>
+          <rect width={w} height={h} rx="12" fill="#121419" stroke="rgba(242,239,233,0.18)" />
+          <circle cx="18" cy="22" r="4" fill={i % 2 ? "#6b95ff" : "#f5b64a"} />
+          <text x="30" y="26" fill="#f2efe9" fontSize="13" fontWeight="600" fontFamily="var(--font-sans), system-ui">{n.label}</text>
+          <text x="30" y="46" fill="#a8a59e" fontSize="11" fontFamily="var(--font-mono), monospace">{n.sub}</text>
+        </g>
+      ))}
+    </svg>
   );
 }
 
 /* ---------- Deployment pipeline ---------- */
 export function PipelineGraphic() {
-  const steps = ["commit", "lint + types", "tests", "build image", "staging", "production"];
-  return (
-    <div className="rounded-xl border border-line bg-bg-elev p-4 shadow-card" aria-hidden="true">
-      <div className="mono mb-3 text-[0.65rem] text-fg-subtle">main · deploy.yml</div>
-      <ol className="flex flex-wrap items-center gap-2">
-        {steps.map((s, i) => (
-          <li key={s} className="flex items-center gap-2">
-            <span className={`mono rounded-md border px-2.5 py-1.5 text-[0.7rem] ${i < 4 ? "border-success/40 bg-success/10 text-success" : i === 4 ? "border-cyan/50 bg-cyan/10 text-cyan" : "border-line text-fg-subtle"}`}>
-              {i < 4 ? "✓ " : i === 4 ? "● " : "○ "}
-              {s}
-            </span>
-            {i < steps.length - 1 && <span className="h-px w-3 bg-line-strong" />}
-          </li>
-        ))}
-      </ol>
-    </div>
-  );
+  return <TerminalPanel />;
 }
 
-/* ---------- SaaS: tenant / module diagram ---------- */
+/* ---------- SaaS modules ---------- */
 export function SaasGraphic() {
+  const mods = ["Auth", "Billing", "Workspaces", "Jobs", "Search", "Events"];
   return (
-    <div className="rounded-xl border border-line bg-bg-elev p-4 shadow-card" aria-hidden="true">
-      <div className="grid grid-cols-3 gap-2">
-        {["Auth", "Billing", "Workspaces", "Jobs", "Search", "Events"].map((m, i) => (
-          <div key={m} className={`${nodeBase} mono text-[0.68rem] ${i % 3 === 1 ? "text-cyan" : "text-fg-muted"}`}>
-            {m}
-          </div>
-        ))}
+    <Window title="platform · modular monolith">
+      <div className="p-4">
+        <div className="grid grid-cols-3 gap-2">
+          {mods.map((m, i) => (
+            <div key={m} className={`rounded-lg border px-3 py-2.5 text-center mono text-[0.68rem] ${i === 1 ? "border-signal/60 bg-signal/15 text-signal-bright" : "border-line bg-white/[0.03] text-fg-muted"}`}>{m}</div>
+          ))}
+        </div>
+        <div className="my-3 flex justify-center">
+          <svg width="120" height="22" viewBox="0 0 120 22" fill="none" stroke="#6b95ff" strokeWidth="1.5"><path d="M20 0v10h80V0M60 10v12" className="flow-line" /></svg>
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          {["tenant_a", "tenant_b", "tenant_c"].map((t) => (
+            <div key={t} className="rounded-lg border border-amber/40 bg-amber/10 px-3 py-2 text-center mono text-[0.65rem] text-amber">{t}</div>
+          ))}
+        </div>
       </div>
-      <div className="my-2 flex justify-center">
-        <svg width="80" height="20" viewBox="0 0 80 20" fill="none" stroke="#22d3ee" strokeWidth="1.5">
-          <path d="M10 0v10h60V0M40 10v10" className="flow-line" />
-        </svg>
-      </div>
-      <div className="grid grid-cols-3 gap-2">
-        {["tenant_a", "tenant_b", "tenant_c"].map((t) => (
-          <div key={t} className={`${nodeBase} mono text-[0.65rem] text-violet`}>
-            {t}
-          </div>
-        ))}
-      </div>
-    </div>
+    </Window>
   );
 }
 
-/* ---------- Generic architecture (case studies) ---------- */
+/* ---------- Architecture (case studies) ---------- */
 export function ArchitectureDiagram({ nodes }: { nodes: string[] }) {
   return (
     <ol className="flex flex-wrap items-stretch gap-3">
       {nodes.map((n, i) => (
         <li key={n} className="flex items-center gap-3">
-          <span className="mono rounded-lg border border-line-strong bg-bg-elev px-3 py-2.5 text-xs text-fg sm:text-sm">
-            <span className="mr-2 text-cyan">{String(i + 1).padStart(2, "0")}</span>
+          <span className="mono rounded-lg border border-line-strong bg-ink-2 px-3 py-2.5 text-xs text-fg sm:text-sm">
+            <span className="mr-2 text-signal-bright">{String(i + 1).padStart(2, "0")}</span>
             {n}
           </span>
           {i < nodes.length - 1 && (
-            <svg width="22" height="12" viewBox="0 0 22 12" fill="none" stroke="#60a5fa" strokeWidth="1.5" aria-hidden="true" className="shrink-0">
+            <svg width="22" height="12" viewBox="0 0 22 12" fill="none" stroke="#6b95ff" strokeWidth="1.5" aria-hidden="true" className="shrink-0">
               <path d="M0 6h18M14 1l5 5-5 5" className="flow-line" />
             </svg>
           )}
@@ -289,19 +352,30 @@ export function ArchitectureDiagram({ nodes }: { nodes: string[] }) {
   );
 }
 
+/* Back-compat exports used by cards */
+export const EcommerceMock = StorefrontPanel;
+export const CrmMock = DashboardPanel;
+export function PhoneMock() {
+  return (
+    <div className="flex justify-center">
+      <PhonePanel />
+    </div>
+  );
+}
+
 export function ServiceVisual({ kind }: { kind: "browser" | "phone" | "dashboard" | "api" | "saas" | "pipeline" }) {
   switch (kind) {
     case "browser":
-      return <EcommerceMock />;
+      return <StorefrontPanel />;
     case "phone":
       return <PhoneMock />;
     case "dashboard":
-      return <CrmMock />;
+      return <DashboardPanel />;
     case "api":
       return <ApiPreview compact />;
     case "saas":
       return <SaasGraphic />;
     case "pipeline":
-      return <PipelineGraphic />;
+      return <TerminalPanel />;
   }
 }

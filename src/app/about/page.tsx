@@ -49,7 +49,7 @@ export default function AboutPage() {
           <ol className="mt-10 grid gap-4 lg:grid-cols-3">
             {aboutContent.principles.map((p, i) => (
               <li key={p.title} className="card p-6">
-                <span className="mono text-xs text-[#0e7490]">{String(i + 1).padStart(2, "0")}</span>
+                <span className="mono text-xs text-[#2f6bff]">{String(i + 1).padStart(2, "0")}</span>
                 <h3 className="mt-3 text-xl font-semibold tracking-tight text-fg-dark">“{p.title}”</h3>
                 <p className="mt-2 text-sm text-fg-dark-muted">{p.detail}</p>
               </li>

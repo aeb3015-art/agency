@@ -97,13 +97,13 @@ export function Header() {
         aria-hidden="true"
         className={`absolute inset-0 -z-10 transition-[background,border-color,box-shadow] duration-300 ${
           scrolled || mobileOpen
-            ? "bg-[rgba(7,11,20,0.82)] backdrop-blur-xl border-b border-line shadow-[0_10px_40px_-20px_rgba(0,0,0,0.7)]"
+            ? "bg-[rgba(11,12,16,0.8)] backdrop-blur-xl border-b border-line shadow-[0_10px_40px_-20px_rgba(0,0,0,0.7)]"
             : "bg-transparent border-b border-transparent"
         }`}
       />
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[60] focus:px-4 focus:py-2 focus:rounded-md focus:bg-cyan focus:text-fg-dark"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[60] focus:px-4 focus:py-2 focus:rounded-md focus:bg-signal focus:text-white"
       >
         Skip to content
       </a>
@@ -143,7 +143,7 @@ export function Header() {
                     <div
                       id={servicesId}
                       hidden={!servicesOpen}
-                      className="absolute left-1/2 top-full mt-3 w-[40rem] -translate-x-1/2 rounded-xl border border-line bg-bg-elev/95 p-3 shadow-2xl backdrop-blur-xl"
+                      className="absolute left-1/2 top-full mt-3 w-[40rem] -translate-x-1/2 rounded-xl border border-line bg-ink-2/95 p-3 shadow-2xl backdrop-blur-xl"
                     >
                       <ul className="grid grid-cols-2 gap-1">
                         {services.map((s) => (
@@ -215,7 +215,7 @@ export function Header() {
         id={menuId}
         ref={mobilePanelRef}
         hidden={!mobileOpen}
-        className="lg:hidden fixed inset-x-0 top-[4.5rem] bottom-0 overflow-y-auto bg-bg/95 backdrop-blur-xl border-t border-line"
+        className="lg:hidden fixed inset-x-0 top-[4.5rem] bottom-0 overflow-y-auto bg-ink/95 backdrop-blur-xl border-t border-line"
       >
         <nav aria-label="Mobile" className="container-x py-6">
           <ul className="flex flex-col gap-1">
