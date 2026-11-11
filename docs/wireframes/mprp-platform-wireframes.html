@@ -1,0 +1,556 @@
+<title>MPRP Platform Wireframes</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,600&display=swap">
+<style>
+/* Layout: blueprint sheet — sticky role switcher on top, each view is a framed wireframe "screen" with annotation notes in the margin */
+:root{
+  --bg:#f3f5f7; --paper:#ffffff; --ink:#18222d; --muted:#5d6b78; --line:#cdd5dd; --fill:#e8edf1;
+  --accent:#1d5c8c; --accent-soft:#dbe8f3; --gate:#a5641b; --gate-soft:#f7ead9; --ok:#2f7a4f; --ok-soft:#dcefe3; --bad:#a83a3a; --bad-soft:#f5dede;
+  --display:"Fraunces",Georgia,serif; --sans:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f151b; --paper:#161f27; --ink:#e3e9ee; --muted:#93a2b0; --line:#2c3a46; --fill:#1f2a34;
+  --accent:#6fa9d6; --accent-soft:#1b3346; --gate:#e0a25a; --gate-soft:#3a2a17; --ok:#6fc093; --ok-soft:#183325; --bad:#e08484; --bad-soft:#3b1d1d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f151b; --paper:#161f27; --ink:#e3e9ee; --muted:#93a2b0; --line:#2c3a46; --fill:#1f2a34;
+  --accent:#6fa9d6; --accent-soft:#1b3346; --gate:#e0a25a; --gate-soft:#3a2a17; --ok:#6fc093; --ok-soft:#183325; --bad:#e08484; --bad-soft:#3b1d1d; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.5;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:32px 32px;background-attachment:fixed}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 64px}
+header.top{background:var(--paper);border:1px solid var(--line);padding:20px 22px;display:grid;gap:6px}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(24px,4vw,34px);margin:0;text-wrap:balance}
+.sub{color:var(--muted);max-width:70ch;margin:0}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border:1px solid var(--line);border-top:0;display:flex;gap:4px;overflow-x:auto;padding:8px}
+nav.tabs button{font:500 13px var(--sans);border:1px solid transparent;background:none;color:var(--muted);padding:7px 12px;cursor:pointer;white-space:nowrap;border-radius:4px}
+nav.tabs button[aria-selected="true"]{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
+nav.tabs button:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+section.view{margin-top:20px;display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:16px;align-items:start}
+@media (max-width:900px){section.view{grid-template-columns:minmax(0,1fr)}}
+.screen{background:var(--paper);border:1.5px solid var(--ink);min-width:0}
+.chrome{display:flex;align-items:center;gap:8px;border-bottom:1.5px solid var(--ink);padding:6px 10px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.chrome i{width:9px;height:9px;border:1.5px solid var(--muted);border-radius:50%;display:inline-block}
+.chrome .url{flex:1;border:1px solid var(--line);padding:2px 8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.app{display:grid;grid-template-columns:170px minmax(0,1fr);min-height:420px}
+@media (max-width:640px){.app{grid-template-columns:minmax(0,1fr)}.side{display:none}}
+.side{border-right:1px dashed var(--line);padding:12px;display:grid;align-content:start;gap:4px;font-size:12.5px}
+.side b{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+.side span{padding:4px 8px;border-radius:3px;color:var(--muted)}
+.side span.on{background:var(--fill);color:var(--ink);font-weight:500}
+.main{padding:16px;display:grid;gap:14px;align-content:start;min-width:0}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.grid{display:grid;gap:10px}
+.g4{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+.g2{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.box{border:1px solid var(--line);padding:10px 12px;background:var(--paper);min-width:0}
+.box h4{margin:0 0 6px;font-size:12px;font-family:var(--mono);font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.kpi{font:600 22px var(--sans);font-variant-numeric:tabular-nums}
+.kpi small{display:block;font:400 11.5px var(--sans);color:var(--muted)}
+.h{font-weight:600;font-size:15px;margin:0}
+.ph{background:repeating-linear-gradient(45deg,var(--fill),var(--fill) 6px,transparent 6px,transparent 12px);border:1px dashed var(--line);display:grid;place-items:center;color:var(--muted);font-size:12px;min-height:90px}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:12.5px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-family:var(--mono);font-size:10.5px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.pill{display:inline-block;font:500 11px var(--sans);padding:2px 8px;border-radius:99px;border:1px solid var(--line);background:var(--fill);color:var(--ink);white-space:nowrap}
+.pill.blue{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+.pill.gate{background:var(--gate-soft);color:var(--gate);border-color:transparent}
+.pill.ok{background:var(--ok-soft);color:var(--ok);border-color:transparent}
+.pill.bad{background:var(--bad-soft);color:var(--bad);border-color:transparent}
+.btn{font:500 12.5px var(--sans);border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);padding:6px 12px;border-radius:4px;cursor:pointer}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.btn.warn{border-color:var(--bad);color:var(--bad)}
+.input{border:1px solid var(--line);padding:6px 10px;color:var(--muted);font-size:12.5px;flex:1;min-width:140px;background:var(--paper)}
+.kanban{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(150px,1fr);gap:8px;overflow-x:auto;padding-bottom:4px}
+.col{background:var(--fill);padding:8px;display:grid;gap:6px;align-content:start;min-height:200px}
+.col h5{margin:0;font:500 11px var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--muted);display:flex;justify-content:space-between}
+.card{background:var(--paper);border:1px solid var(--line);padding:7px 8px;font-size:12px;display:grid;gap:3px}
+.card .m{color:var(--muted);font-size:11px}
+.steps{display:grid;gap:0}
+.step{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:10px;align-items:start;padding:7px 0;border-bottom:1px dashed var(--line);font-size:12.5px}
+.dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--line);margin-top:3px}
+.dot.done{background:var(--ok);border-color:var(--ok)}
+.dot.now{background:var(--accent-soft);border-color:var(--accent)}
+.bar{height:8px;background:var(--fill);border-radius:99px;overflow:hidden}
+.bar > i{display:block;height:100%;background:var(--accent)}
+aside.notes{display:grid;gap:10px;align-content:start}
+.note{background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--gate);padding:10px 12px;font-size:12.5px}
+.note b{display:block;font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--gate);margin-bottom:3px}
+.note p{margin:0}
+/* System map */
+.map{overflow-x:auto;background:var(--paper);border:1.5px solid var(--ink);padding:12px}
+.map svg{display:block;min-width:900px;width:100%;height:auto}
+.map text{font-family:var(--sans);fill:var(--ink)}
+.map .lbl{font-size:11px;fill:var(--muted);font-family:var(--mono)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--muted);margin-top:10px}
+.legend span{display:flex;align-items:center;gap:6px}
+.sw{width:22px;height:0;border-top:2px solid var(--accent)}
+.sw.g{border-top:2px dashed var(--gate)}
+.sw.k{border-top:2px dotted var(--muted)}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12px}
+.flow .pill{font-size:11.5px}
+.flow em{color:var(--muted);font-style:normal}
+.toast{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--paper);padding:10px 14px;border-radius:4px;font-size:13px;z-index:20}
+.lock{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--bad);background:var(--bad-soft);padding:8px 10px}
+.verify{font:500 10.5px var(--mono);color:var(--gate)}
+@media (prefers-reduced-motion:no-preference){.view{animation:in .25s ease-out}@keyframes in{from{transform:translateY(4px)}to{transform:none}}}
+</style>
+
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow">Wireframe set · v0.1 · synthetic data only</div>
+  <h1>MPRP CRM, Client Portal &amp; Partner Platform</h1>
+  <p class="sub">How the platform works, screen by screen. Start with the system map, then switch roles to see what each user sees. Orange notes mark the approval gates and privacy rules that drive the design. All names and figures are made-up examples.</p>
+</header>
+
+<nav class="tabs" role="tablist" aria-label="Views">
+  <button role="tab" data-v="map">System map</button>
+  <button role="tab" data-v="journey">Client journey</button>
+  <button role="tab" data-v="admin">Executive dashboard</button>
+  <button role="tab" data-v="crm">CRM pipeline</button>
+  <button role="tab" data-v="case">Case file</button>
+  <button role="tab" data-v="approval">Approval queue</button>
+  <button role="tab" data-v="partner">Licensed Agent portal</button>
+  <button role="tab" data-v="notary">Notary portal</button>
+  <button role="tab" data-v="client">Client portal</button>
+  <button role="tab" data-v="finance">Payments</button>
+  <button role="tab" data-v="marketing">Campaigns</button>
+  <button role="tab" data-v="rules">Rules register</button>
+</nav>
+
+<!-- ===== SYSTEM MAP ===== -->
+<section class="view" id="v-map">
+  <div style="min-width:0;display:grid;gap:12px">
+  <div class="map">
+  <svg viewBox="0 0 1000 560" role="img" aria-label="System map: ten websites feed the central CRM, which serves staff, partner, notary and client portals through an approval gate">
+    <defs>
+      <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker>
+      <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--gate)"/></marker>
+    </defs>
+    <!-- websites -->
+    <text x="20" y="24" class="lbl">10 LEAD WEBSITES (EXISTING)</text>
+    <g id="sites"></g>
+    <!-- API -->
+    <rect x="190" y="210" width="130" height="110" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+    <text x="255" y="240" text-anchor="middle" font-weight="600" font-size="13">Lead Intake API</text>
+    <text x="255" y="260" text-anchor="middle" class="lbl">HMAC key per site</text>
+    <text x="255" y="276" text-anchor="middle" class="lbl">idempotency · rate limit</text>
+    <text x="255" y="292" text-anchor="middle" class="lbl">spam + dedupe</text>
+    <text x="255" y="308" text-anchor="middle" class="lbl">consent capture</text>
+    <!-- core -->
+    <rect x="370" y="60" width="300" height="440" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+    <text x="520" y="88" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-weight="600" font-size="18">Central CRM (source of truth)</text>
+    <g font-size="12">
+      <rect x="390" y="104" width="125" height="44" fill="var(--fill)" stroke="var(--line)"/><text x="452" y="130" text-anchor="middle">Leads &amp; Pipeline</text>
+      <rect x="525" y="104" width="125" height="44" fill="var(--fill)" stroke="var(--line)"/><text x="587" y="130" text-anchor="middle">Clients &amp; Households</text>
+      <rect x="390" y="156" width="125" height="44" fill="var(--fill)" stroke="var(--line)"/><text x="452" y="182" text-anchor="middle">Onboarding &amp; KYC</text>
+      <rect x="525" y="156" width="125" height="44" fill="var(--fill)" stroke="var(--line)"/><text x="587" y="182" text-anchor="middle">MPRP Cases</text>
+      <rect x="390" y="208" width="125" height="44" fill="var(--fill)" stroke="var(--line)"/><text x="452" y="234" text-anchor="middle">Document Vault</text>
+      <rect x="525" y="208" width="125" height="44" fill="var(--fill)" stroke="var(--line)"/><text x="587" y="234" text-anchor="middle">Property &amp; Notary</text>
+      <rect x="390" y="260" width="125" height="44" fill="var(--fill)" stroke="var(--line)"/><text x="452" y="286" text-anchor="middle">Payments &amp; Invoices</text>
+      <rect x="525" y="260" width="125" height="44" fill="var(--fill)" stroke="var(--line)"/><text x="587" y="286" text-anchor="middle">Deadlines &amp; Tasks</text>
+      <rect x="390" y="312" width="125" height="44" fill="var(--fill)" stroke="var(--line)"/><text x="452" y="338" text-anchor="middle">Messaging</text>
+      <rect x="525" y="312" width="125" height="44" fill="var(--fill)" stroke="var(--line)"/><text x="587" y="338" text-anchor="middle">Post-approval Compliance</text>
+      <rect x="390" y="364" width="260" height="40" fill="var(--gate-soft)" stroke="var(--gate)" stroke-width="1.5"/><text x="520" y="389" text-anchor="middle" font-weight="600" fill="var(--gate)">Approval &amp; Publishing Gate</text>
+      <rect x="390" y="412" width="125" height="36" fill="var(--fill)" stroke="var(--line)"/><text x="452" y="435" text-anchor="middle">Rules Register</text>
+      <rect x="525" y="412" width="125" height="36" fill="var(--fill)" stroke="var(--line)"/><text x="587" y="435" text-anchor="middle">RBAC + Audit Log</text>
+      <text x="520" y="476" text-anchor="middle" class="lbl">PostgreSQL · encrypted S3 (EU) · Redis queues</text>
+    </g>
+    <!-- marketing (separated) -->
+    <rect x="370" y="515" width="300" height="34" fill="var(--paper)" stroke="var(--ink)" stroke-dasharray="4 3"/>
+    <text x="520" y="537" text-anchor="middle" font-size="12">Marketing &amp; Campaigns (consented contacts only)</text>
+    <!-- portals -->
+    <g font-size="12.5">
+      <rect x="740" y="60" width="230" height="58" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.5"/><text x="855" y="85" text-anchor="middle" font-weight="600">Staff Workspace</text><text x="855" y="103" text-anchor="middle" class="lbl">sales · case · compliance · finance</text>
+      <rect x="740" y="150" width="230" height="58" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.5"/><text x="855" y="175" text-anchor="middle" font-weight="600">Licensed Agent Portal</text><text x="855" y="193" text-anchor="middle" class="lbl">assigned cases only</text>
+      <rect x="740" y="240" width="230" height="58" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.5"/><text x="855" y="265" text-anchor="middle" font-weight="600">Notary / Property Portal</text><text x="855" y="283" text-anchor="middle" class="lbl">property records only</text>
+      <rect x="740" y="330" width="230" height="58" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.5"/><text x="855" y="355" text-anchor="middle" font-weight="600">Bank / Finance Liaison</text><text x="855" y="373" text-anchor="middle" class="lbl">payment evidence only</text>
+      <rect x="740" y="420" width="230" height="58" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/><text x="855" y="445" text-anchor="middle" font-weight="600">Client Portal</text><text x="855" y="463" text-anchor="middle" class="lbl">published items only · EN 中文 VI عربي</text>
+    </g>
+    <!-- arrows -->
+    <path d="M320,265 L366,265" stroke="var(--accent)" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+    <path d="M670,89 L736,89" stroke="var(--accent)" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+    <path d="M736,179 L670,179" stroke="var(--accent)" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+    <path d="M736,269 L670,236" stroke="var(--accent)" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+    <path d="M736,359 L670,290" stroke="var(--accent)" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+    <path d="M650,384 C700,384 700,449 736,449" stroke="var(--gate)" stroke-width="2" stroke-dasharray="6 4" fill="none" marker-end="url(#ag)"/>
+    <text x="684" y="420" class="lbl" fill="var(--gate)">publish</text>
+    <path d="M520,404 L520,515" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="2 4" fill="none"/>
+    <text x="528" y="508" class="lbl">consent filter</text>
+    <text x="760" y="34" class="lbl">EXTERNAL &amp; CLIENT ACCESS</text>
+    <text x="684" y="540" class="lbl">Partner requests never reach</text>
+    <text x="684" y="553" class="lbl">clients without passing the gate</text>
+  </svg>
+  </div>
+  <div class="legend"><span><i class="sw"></i>Data flow (permission-checked)</span><span><i class="sw g"></i>Client publication, after company approval</span><span><i class="sw k"></i>Consent-filtered export to marketing</span></div>
+  </div>
+  <aside class="notes">
+    <div class="note"><b>One record</b><p>Every portal reads the same client and case records. Access is decided on the server per role, case, field and document.</p></div>
+    <div class="note"><b>Gate</b><p>Requests from the Licensed Agent, notary or bank go to an internal review queue first. Default visibility is internal only.</p></div>
+    <div class="note"><b>Separation</b><p>Marketing sees only contacts with marketing consent. Case, financial and medical data never enter segments.</p></div>
+    <div class="note"><b>No government API</b><p>Agency submissions happen through the Licensed Agent. The platform records references and milestones; it does not submit to Residency Malta.</p></div>
+  </aside>
+</section>
+
+<!-- ===== JOURNEY ===== -->
+<section class="view" id="v-journey" hidden>
+  <div class="screen"><div class="main">
+    <p class="h">Client lifecycle: from enquiry to ongoing compliance</p>
+    <div class="steps" id="journeySteps"></div>
+  </div></div>
+  <aside class="notes">
+    <div class="note"><b>Parallel workstreams</b><p>Property, banking and family documents run alongside the application. Stages are operational, not a fixed legal sequence.</p></div>
+    <div class="note"><b>Attribution kept</b><p>The website, landing page and UTM of the first enquiry stay attached to the client forever, for revenue reporting.</p></div>
+    <div class="note"><b>Who decides</b><p>Eligibility, due diligence and approval are decided by the Agency. The platform tracks; it does not predict outcomes.</p></div>
+  </aside>
+</section>
+
+<!-- ===== ADMIN ===== -->
+<section class="view" id="v-admin" hidden>
+  <div class="screen">
+    <div class="chrome"><i></i><i></i><i></i><span class="url">crm.example-mprp.eu/dashboard</span></div>
+    <div class="app">
+      <div class="side"><b>Workspace</b><span class="on">Dashboard</span><span>Leads</span><span>Clients</span><span>Cases</span><span>Approval queue <span class="pill gate">7</span></span><span>Documents</span><span>Property</span><span>Payments</span><span>Compliance</span><b>Admin</b><span>Websites (10)</span><span>Partners</span><span>Rules register</span><span>Users &amp; roles</span><span>Audit log</span></div>
+      <div class="main">
+        <div class="row" style="justify-content:space-between"><p class="h">Good morning, Operations</p><div class="row"><span class="input" style="flex:0 1 180px">Last 30 days ▾</span><span class="input" style="flex:0 1 160px">All websites ▾</span><span class="input" style="flex:0 1 160px">All partners ▾</span></div></div>
+        <div class="grid g4">
+          <div class="box"><h4>Leads today</h4><div class="kpi">23<small>+6 vs. yesterday</small></div></div>
+          <div class="box"><h4>Qualified (30d)</h4><div class="kpi">41<small>18% of new leads</small></div></div>
+          <div class="box"><h4>Active cases</h4><div class="kpi">64<small>12 awaiting partner</small></div></div>
+          <div class="box"><h4>Overdue payments</h4><div class="kpi" style="color:var(--bad)">3<small>€37,000 statutory due</small></div></div>
+        </div>
+        <div class="grid g2">
+          <div class="box"><h4>Leads by website (30d)</h4><div id="siteBars" class="grid" style="gap:5px"></div></div>
+          <div class="box"><h4>Needs internal action</h4>
+            <div class="steps">
+              <div class="step"><span class="pill gate">Gate</span><span>Agent request: updated bank statements · MPRP-2026-0142</span><span class="m">2h</span></div>
+              <div class="step"><span class="pill bad">Due</span><span>€15,000 admin fee instalment · MPRP-2026-0117</span><span class="m">4d</span></div>
+              <div class="step"><span class="pill blue">Review</span><span>Passport upload (spouse) · MPRP-2026-0151</span><span class="m">1d</span></div>
+              <div class="step"><span class="pill">Query</span><span>Agency query recorded by Agent · MPRP-2026-0098</span><span class="m">6d</span></div>
+            </div></div>
+        </div>
+        <div class="grid g2">
+          <div class="box"><h4>Partner workload &amp; turnaround</h4><div class="tbl"><table><tr><th>Partner</th><th>Cases</th><th>Open requests</th><th>Avg. reply</th></tr><tr><td>Licensed Agent A</td><td>38</td><td>9</td><td>2.1 days</td></tr><tr><td>Licensed Agent B</td><td>26</td><td>4</td><td>3.4 days</td></tr><tr><td>Notary Office C</td><td>17</td><td>2</td><td>1.6 days</td></tr></table></div></div>
+          <div class="box"><h4>Upcoming deadlines (14d)</h4><div class="tbl"><table><tr><th>Type</th><th>Case</th><th>Due</th></tr><tr><td><span class="pill bad">Statutory</span></td><td>0117 admin fee</td><td>15 Nov</td></tr><tr><td><span class="pill blue">Partner</span></td><td>0142 bank docs</td><td>18 Nov</td></tr><tr><td><span class="pill">Internal SLA</span></td><td>0151 KYC review</td><td>20 Nov</td></tr><tr><td><span class="pill ok">Compliance</span></td><td>0034 lease renewal</td><td>24 Nov</td></tr></table></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <div class="note"><b>Filters</b><p>Every widget filters by date, owner, team, case type, website, country and partner.</p></div>
+    <div class="note"><b>Deadline types</b><p>Each deadline shows its source: statutory, Agency instruction, partner, internal SLA, or client-chosen date.</p></div>
+    <div class="note"><b>Click-through</b><p>Every number opens the filtered list behind it.</p></div>
+  </aside>
+</section>
+
+<!-- ===== CRM ===== -->
+<section class="view" id="v-crm" hidden>
+  <div class="screen">
+    <div class="chrome"><i></i><i></i><i></i><span class="url">crm.example-mprp.eu/leads/pipeline</span></div>
+    <div class="main">
+      <div class="row"><span class="input">Search name, email, phone…</span><span class="pill blue">Website: All</span><span class="pill">Language: All</span><span class="pill">Owner: Me</span><button class="btn" data-toast="Lead list exported (CSV)">Export</button><button class="btn pri" data-toast="New lead form opened">+ Lead</button></div>
+      <div class="kanban" id="kanban"></div>
+      <div class="box"><h4>Lead profile · drawer (opens on card click)</h4>
+        <div class="grid g2">
+          <div><p class="h" id="leadName">Elena V. (synthetic)</p><p class="sub" style="font-size:12.5px">Source: <b>site-04</b> · /guide-to-mprp · utm_source=google · utm_campaign=mprp-q4 · Consent v3 captured 09 Nov 2026 14:02</p>
+          <div class="row" style="margin-top:8px"><span class="pill">Also enquired on site-07</span><span class="pill ok">Marketing consent: yes</span></div></div>
+          <div class="steps"><div class="step"><span class="dot done"></span><span>Form submitted (site-04)</span><span class="m">09 Nov</span></div><div class="step"><span class="dot done"></span><span>Auto-assigned to Sales Rep 2</span><span class="m">09 Nov</span></div><div class="step"><span class="dot now"></span><span>Call attempt · no answer</span><span class="m">10 Nov</span></div></div>
+        </div>
+        <div class="row" style="margin-top:10px"><button class="btn" data-toast="Call logged">Log call</button><button class="btn" data-toast="Consultation booking link sent">Book consultation</button><button class="btn" data-toast="Lead marked Lost with reason">Mark lost…</button><button class="btn pri" data-toast="Client ID and Case ID created; portal invitation queued">Convert to client</button></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <div class="note"><b>Duplicates</b><p>One person, two websites: linked under one contact; each enquiry keeps its own source and consent evidence.</p></div>
+    <div class="note"><b>Timestamps</b><p>Every column move is recorded for conversion-speed reporting.</p></div>
+    <div class="note"><b>Outcomes</b><p>Lost, Not Eligible, Deferred and Unresponsive are recorded outcomes with a reason, not deleted cards.</p></div>
+  </aside>
+</section>
+
+<!-- ===== CASE ===== -->
+<section class="view" id="v-case" hidden>
+  <div class="screen">
+    <div class="chrome"><i></i><i></i><i></i><span class="url">crm.example-mprp.eu/cases/MPRP-2026-0142</span></div>
+    <div class="main">
+      <div class="row" style="justify-content:space-between"><div><p class="h">MPRP-2026-0142 · Household of Mr. A. (synthetic)</p><p class="sub" style="font-size:12.5px">Route: €500k assets / €150k financial · Rental · Rule version RV-2025.2 · Licensed Agent A</p></div><div class="row"><span class="pill blue">Stage 13 · Initial Agency Vetting</span><span class="pill">Case manager: K.</span></div></div>
+      <div class="row" role="tablist" id="caseTabs"><span class="pill blue">Overview</span><span class="pill">Household (4)</span><span class="pill">Documents</span><span class="pill">Requests</span><span class="pill">Property</span><span class="pill">Payments</span><span class="pill">Messages</span><span class="pill">Audit</span></div>
+      <div class="grid g2">
+        <div class="box"><h4>Workstreams</h4>
+          <div class="grid" style="gap:8px">
+            <div>Application <div class="bar"><i style="width:52%"></i></div></div>
+            <div>Documents (38/46) <div class="bar"><i style="width:82%"></i></div></div>
+            <div>Property: lease <div class="bar"><i style="width:30%"></i></div></div>
+            <div>Payments <div class="bar"><i style="width:25%"></i></div></div>
+          </div></div>
+        <div class="box"><h4>Household &amp; required forms</h4><div class="tbl"><table><tr><th>Person</th><th>Role</th><th>Form</th><th>Docs</th></tr><tr><td>Mr. A.</td><td>Main applicant</td><td>MPRP 2A <span class="verify">verify</span></td><td>14/15</td></tr><tr><td>Mrs. A.</td><td>Spouse</td><td>MPRP 2C <span class="verify">verify</span></td><td>11/12</td></tr><tr><td>Child 1 (14)</td><td>Minor</td><td>MPRP 2B <span class="verify">verify</span></td><td>7/9</td></tr><tr><td>Child 2 (9)</td><td>Minor</td><td>MPRP 2B <span class="verify">verify</span></td><td>6/10</td></tr></table></div></div>
+      </div>
+      <div class="box"><h4>Stage timeline</h4>
+        <div class="steps">
+          <div class="step"><span class="dot done"></span><span>10 · Ready for Agency Submission — approved by Licensed Agent A</span><span class="m">02 Oct</span></div>
+          <div class="step"><span class="dot done"></span><span>11–12 · Submitted; reference recorded by Agent (evidence attached)</span><span class="m">06 Oct</span></div>
+          <div class="step"><span class="dot done"></span><span>Deadline created: €15,000 admin fee within 1 month of submission (source: S.L. 217.26, RV-2025.2)</span><span class="m">06 Oct</span></div>
+          <div class="step"><span class="dot now"></span><span>13 · Initial Agency Vetting — owner: Agent A · target 30 Nov</span><span class="pill">Client sees: “Under review by the Agency”</span></div>
+          <div class="step"><span class="dot"></span><span>14 · Agency Due Diligence</span><span class="m">—</span></div>
+        </div></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <div class="note"><b>Rule version pinned</b><p>The case keeps the rule version it started under. New rule versions do not rewrite history.</p></div>
+    <div class="note"><b>Two descriptions</b><p>Every stage has an internal note and a separate client-facing wording that must be approved.</p></div>
+    <div class="note"><b>Requires verification</b><p>Form codes marked <span class="verify">verify</span> come from the 2026 RMA 76 circular and must be confirmed with the Licensed Agent before activation.</p></div>
+  </aside>
+</section>
+
+<!-- ===== APPROVAL ===== -->
+<section class="view" id="v-approval" hidden>
+  <div class="screen">
+    <div class="chrome"><i></i><i></i><i></i><span class="url">crm.example-mprp.eu/approvals/REQ-0391</span></div>
+    <div class="main">
+      <div class="flow"><span class="pill ok">Partner creates</span><em>→</em><span class="pill gate" id="fsReview">Internal review</span><em>→</em><span class="pill" id="fsApproved">Company approval</span><em>→</em><span class="pill" id="fsPub">Published to client</span><em>→</em><span class="pill">Client responds</span><em>→</em><span class="pill">Company review</span><em>→</em><span class="pill">Partner review</span><em>→</em><span class="pill">Completed</span></div>
+      <div class="grid g2">
+        <div class="box"><h4>Original partner request · read-only</h4>
+          <p style="margin:0 0 6px"><b>From:</b> Licensed Agent A · Case processor</p>
+          <p style="margin:0;font-size:13px">“Bank statements for account ending 4471 cover to July only. Need Aug–Oct, stamped. Also explain incoming €210k on 14 Aug (source of funds). Internal: the Agency vetting team flagged this.”</p>
+          <p class="m" style="color:var(--muted);font-size:11.5px;margin-top:8px">Kept unchanged in the audit record.</p></div>
+        <div class="box"><h4>Client-facing wording · editable</h4>
+          <div style="border:1px solid var(--line);padding:8px;font-size:13px" contenteditable="true" id="clientText">Please upload bank statements for your account ending 4471 for August to October 2026, stamped by the bank, plus a short explanation of the transfer received on 14 August.</div>
+          <div class="row" style="margin-top:8px"><span class="input" style="flex:0 1 140px">Due: 25 Nov 2026</span><span class="input" style="flex:0 1 160px">Language: EN + 中文</span></div></div>
+      </div>
+      <div class="lock">🔒 Internal remark (“flagged by vetting team”) is removed from the client version and will not appear in notifications, search or previews.</div>
+      <div class="row"><button class="btn pri" id="approveBtn">Approve &amp; publish</button><button class="btn" data-toast="Clarification sent to Licensed Agent A">Ask partner to clarify</button><button class="btn warn" data-toast="Request rejected; partner notified with reason">Reject</button></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <div class="note"><b>Core rule</b><p>Nothing a partner writes reaches the client until a company user approves the wording.</p></div>
+    <div class="note"><b>Not a legal sign-off</b><p>Approving publication does not replace the Licensed Agent's professional or regulatory decisions.</p></div>
+    <div class="note"><b>Try it</b><p>Press “Approve &amp; publish” and watch the status bar advance, then open the Client portal tab.</p></div>
+  </aside>
+</section>
+
+<!-- ===== PARTNER ===== -->
+<section class="view" id="v-partner" hidden>
+  <div class="screen">
+    <div class="chrome"><i></i><i></i><i></i><span class="url">partners.example-mprp.eu · Licensed Agent A</span></div>
+    <div class="app">
+      <div class="side"><b>Licensed Agent A</b><span class="on">My cases (38)</span><span>Document requests</span><span>Agency queries</span><span>Milestones</span><span>Messages</span><span>Team users</span></div>
+      <div class="main">
+        <div class="tbl"><table><tr><th>Case</th><th>Stage</th><th>Next action</th><th>Docs shared</th><th></th></tr>
+          <tr><td>MPRP-2026-0142</td><td><span class="pill blue">Vetting</span></td><td>Record Agency query</td><td>31</td><td><button class="btn" data-toast="Case opened (assigned case)">Open</button></td></tr>
+          <tr><td>MPRP-2026-0151</td><td><span class="pill gate">New assignment</span></td><td>Accept case</td><td>0</td><td><button class="btn pri" data-toast="Case accepted; company notified">Accept</button></td></tr>
+          <tr><td>MPRP-2026-0098</td><td><span class="pill">Due diligence</span></td><td>Readiness review</td><td>44</td><td><button class="btn" data-toast="Case opened (assigned case)">Open</button></td></tr></table></div>
+        <div class="grid g2">
+          <div class="box"><h4>New request to client</h4><span class="input" style="display:block">Document type: Bank statement ▾</span><div class="ph" style="min-height:60px;margin-top:6px">Request text…</div><div class="row" style="margin-top:8px"><button class="btn pri" data-toast="Sent to company review queue (not visible to client yet)">Send for company review</button></div></div>
+          <div class="box"><h4>Record official milestone</h4><span class="input" style="display:block">Milestone: Letter of Approval in Principle ▾</span><span class="input" style="display:block;margin-top:6px">Agency reference: ________</span><div class="ph" style="min-height:50px;margin-top:6px">Attach evidence (PDF)</div></div>
+        </div>
+        <div class="lock">🔒 Hidden from partners: sales notes, marketing data, other partners' cases, company finances, and fields not granted for this case.</div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <div class="note"><b>Tenant isolation</b><p>Guessing another case ID or file URL returns “not found”. Checked on the server and on storage.</p></div>
+    <div class="note"><b>Field-level grants</b><p>Being assigned to a case does not show everything. Medical records need an extra grant.</p></div>
+  </aside>
+</section>
+
+<!-- ===== NOTARY ===== -->
+<section class="view" id="v-notary" hidden>
+  <div class="screen">
+    <div class="chrome"><i></i><i></i><i></i><span class="url">partners.example-mprp.eu · Notary Office C</span></div>
+    <div class="main">
+      <div class="row" style="justify-content:space-between"><p class="h">Property case PR-0077 · Purchase · Sliema apartment (synthetic)</p><span class="pill blue">Promise of Sale signed</span></div>
+      <div class="grid g4">
+        <div class="box"><h4>Price</h4><div class="kpi">€410,000<small>min. qualifying €375,000</small></div></div>
+        <div class="box"><h4>Deposit</h4><div class="kpi">€41,000<small>verified by bank liaison</small></div></div>
+        <div class="box"><h4>Final deed</h4><div class="kpi">12 Dec<small>appointment booked</small></div></div>
+        <div class="box"><h4>Holding period</h4><div class="kpi">5 yrs<small>from deed date</small></div></div>
+      </div>
+      <div class="box"><h4>Transaction stages</h4><div class="steps">
+        <div class="step"><span class="dot done"></span><span>Reservation agreement</span><span class="m">03 Sep</span></div>
+        <div class="step"><span class="dot done"></span><span>Promise of Sale + deposit</span><span class="m">20 Sep</span></div>
+        <div class="step"><span class="dot now"></span><span>Title search &amp; encumbrances</span><button class="btn" data-toast="Stage marked complete; case manager notified">Mark complete</button></div>
+        <div class="step"><span class="dot"></span><span>Final deed &amp; registration</span><span class="m">—</span></div></div></div>
+      <div class="lock">🔒 Not visible to notary: immigration screening, medical, family, and unrelated financial documents.</div>
+    </div>
+  </div>
+  <aside class="notes">
+    <div class="note"><b>Same gate</b><p>Notary requests for the client go through the approval queue too.</p></div>
+    <div class="note"><b>Rental route</b><p>Same screen with landlord, annual rent (min. €14,000), lease term and renewal dates.</p></div>
+  </aside>
+</section>
+
+<!-- ===== CLIENT ===== -->
+<section class="view" id="v-client" hidden>
+  <div class="screen" style="max-width:440px;justify-self:center;width:100%">
+    <div class="chrome"><i></i><i></i><i></i><span class="url">my.example-mprp.eu</span><span>EN ▾</span></div>
+    <div class="main">
+      <div><p class="h">Welcome back, Mr. A.</p><p class="sub" style="font-size:12.5px">Application MPRP-2026-0142 · Your manager: K.</p></div>
+      <div class="box"><h4>Where you are</h4><p style="margin:0 0 6px;font-weight:500">Under review by the Agency</p><div class="bar"><i style="width:52%"></i></div><p class="sub" style="font-size:11.5px;margin-top:6px">We will update you when the Agency responds. Timelines are set by the Agency.</p></div>
+      <div class="box"><h4>Action needed</h4><div id="clientRequests"><p class="sub" style="font-size:12.5px;margin:0" id="noReq">Nothing needed from you right now.</p></div></div>
+      <div class="box"><h4>Payments</h4><div class="tbl"><table><tr><td>Admin fee (instalment 1)</td><td>€15,000</td><td><span class="pill ok">Verified</span></td></tr><tr><td>Lease deposit</td><td>€3,500</td><td><span class="pill">Upload received</span></td></tr></table></div></div>
+      <div class="grid" style="grid-template-columns:1fr 1fr;gap:8px"><button class="btn">My family</button><button class="btn">My documents</button><button class="btn">My property</button><button class="btn">Messages</button></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <div class="note"><b>Only published items</b><p>The client sees requests only after approval. Approve one in the Approval queue tab to see it appear here.</p></div>
+    <div class="note"><b>No predictions</b><p>No approval probability and no guaranteed dates.</p></div>
+    <div class="note"><b>Payment honesty</b><p>“Upload received” is not “Verified”. Only finance can mark a payment verified against bank evidence.</p></div>
+  </aside>
+</section>
+
+<!-- ===== FINANCE ===== -->
+<section class="view" id="v-finance" hidden>
+  <div class="screen">
+    <div class="chrome"><i></i><i></i><i></i><span class="url">crm.example-mprp.eu/payments</span></div>
+    <div class="main">
+      <div class="row"><span class="pill blue">Case: MPRP-2026-0142</span><span class="pill">Status: All</span><span class="pill">Payee type: All</span></div>
+      <div class="tbl"><table>
+        <tr><th>Item</th><th>Payee</th><th>Kind</th><th>Amount</th><th>Due</th><th>Status</th><th></th></tr>
+        <tr><td>Admin fee · part 1</td><td>Agency</td><td>Statutory</td><td>€15,000</td><td>06 Nov</td><td><span class="pill ok">Verified</span></td><td></td></tr>
+        <tr><td>Admin fee · part 2</td><td>Agency</td><td>Statutory</td><td>€45,000</td><td>2 mo after AIP</td><td><span class="pill">Not yet due</span></td><td></td></tr>
+        <tr><td>Government contribution</td><td>Government</td><td>Statutory</td><td>€37,000</td><td>after AIP</td><td><span class="pill">Not yet due</span></td><td></td></tr>
+        <tr><td>Dependant fee × 3</td><td>Agency</td><td>Statutory</td><td>€22,500</td><td>after AIP</td><td><span class="pill">Not yet due</span></td><td></td></tr>
+        <tr><td>NGO donation</td><td>Registered NGO</td><td>Statutory</td><td>€2,000</td><td>after AIP</td><td><span class="pill">Not yet due</span></td><td></td></tr>
+        <tr><td>Professional service fee</td><td>Our company</td><td>Commercial</td><td>€25,000</td><td>01 Oct</td><td><span class="pill ok">Verified</span></td><td></td></tr>
+        <tr><td>Lease deposit</td><td>Landlord</td><td>Property</td><td>€3,500</td><td>15 Nov</td><td><span class="pill gate">Evidence uploaded</span></td><td><button class="btn" data-toast="Marked verified against bank confirmation">Verify</button></td></tr>
+      </table></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <div class="note"><b>Every row says</b><p>who is owed, statutory or commercial, and whether it is verified.</p></div>
+    <div class="note"><b>No money moves here</b><p>Transfers happen through banks. The platform stores instructions and evidence, never bank logins.</p></div>
+    <div class="note"><b>Amounts from rules</b><p>Figures come from the active rule version, not from code.</p></div>
+  </aside>
+</section>
+
+<!-- ===== MARKETING ===== -->
+<section class="view" id="v-marketing" hidden>
+  <div class="screen">
+    <div class="chrome"><i></i><i></i><i></i><span class="url">crm.example-mprp.eu/campaigns/new</span></div>
+    <div class="main">
+      <p class="h">New campaign · “MPRP update – November”</p>
+      <div class="grid g2">
+        <div class="box"><h4>Audience</h4>
+          <div class="grid" style="gap:6px;font-size:13px">
+            <label><input type="checkbox" id="mkSite" checked> Website of origin: site-04</label>
+            <label><input type="checkbox" id="mkLang" checked> Language: Simplified Chinese</label>
+            <label><input type="checkbox" checked disabled> Marketing consent required (always on)</label>
+            <label><input type="checkbox" checked disabled> Exclude unsubscribed &amp; suppressed (always on)</label>
+          </div>
+          <p style="margin:10px 0 0" class="kpi" id="mkCount">212<small>eligible recipients</small></p></div>
+        <div class="box"><h4>Performance (last campaign)</h4><div class="tbl"><table><tr><th>Sent</th><th>Delivered</th><th>Clicks</th><th>Consults</th><th>Unsub</th></tr><tr><td>1,904</td><td>1,861</td><td>143</td><td>9</td><td>11</td></tr></table></div></div>
+      </div>
+      <div class="ph">Email template editor · EN / 中文 / VI / عربي</div>
+      <div class="row"><button class="btn" data-toast="Test email sent to marketing inbox">Send test</button><button class="btn pri" data-toast="Submitted for bulk-send approval">Submit for approval</button></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <div class="note"><b>Separate consent</b><p>Becoming a client does not subscribe anyone. Each consent stores source, date, form text and version.</p></div>
+    <div class="note"><b>No case data</b><p>Segments cannot use application, financial or medical fields.</p></div>
+  </aside>
+</section>
+
+<!-- ===== RULES ===== -->
+<section class="view" id="v-rules" hidden>
+  <div class="screen">
+    <div class="chrome"><i></i><i></i><i></i><span class="url">crm.example-mprp.eu/admin/rules</span></div>
+    <div class="main">
+      <div class="row" style="justify-content:space-between"><p class="h">Regulatory requirements register</p><button class="btn pri" data-toast="Draft RV-2026.1 created; needs a second approver">+ New version</button></div>
+      <div class="tbl"><table>
+        <tr><th>Version</th><th>Effective</th><th>Status</th><th>Source</th><th>Applies to</th></tr>
+        <tr><td>RV-2026.1</td><td>01 Jul 2026</td><td><span class="pill gate">Requires Licensed Agent verification</span></td><td>RMA 76 circular (forms 2A/2B/2C)</td><td>New cases</td></tr>
+        <tr><td>RV-2025.2</td><td>2025</td><td><span class="pill ok">Approved</span></td><td>S.L. 217.26 as amended by LN 146/2025</td><td>Cases opened under it (pinned)</td></tr>
+      </table></div>
+      <div class="box"><h4>Rule values · RV-2025.2</h4><div class="tbl"><table>
+        <tr><th>Rule</th><th>Value</th></tr>
+        <tr><td>Capital assets (route A / B)</td><td>€500,000 incl. €150,000 financial / €650,000 incl. €75,000 financial</td></tr>
+        <tr><td>Admin fee</td><td>€60,000 (€15,000 within 1 month of submission; €45,000 within 2 months of AIP)</td></tr>
+        <tr><td>Government contribution</td><td>€37,000</td></tr>
+        <tr><td>Dependant admin fee</td><td>€7,500 each, subject to exemptions</td></tr>
+        <tr><td>Property minimum</td><td>Purchase €375,000 · Rent €14,000 / year · hold 5 years</td></tr>
+        <tr><td>NGO donation · Residence card</td><td>€2,000 · €500 per person</td></tr>
+      </table></div></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <div class="note"><b>Two-person approval</b><p>A rule change is drafted, reviewed and approved by an administrator before it takes effect.</p></div>
+    <div class="note"><b>History kept</b><p>Old versions stay. Existing cases keep their pinned version.</p></div>
+  </aside>
+</section>
+</div>
+
+<script>
+(function(){
+  // sites in system map
+  var g=document.getElementById('sites'),ns='http://www.w3.org/2000/svg',h='';
+  for(var i=1;i<=10;i++){var y=36+(i-1)*48;
+    h+='<rect x="20" y="'+y+'" width="120" height="36" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>'+
+       '<text x="80" y="'+(y+22)+'" text-anchor="middle" font-size="12">site-'+(i<10?'0':'')+i+'</text>'+
+       '<path d="M140,'+(y+18)+' C165,'+(y+18)+' 165,265 186,265" stroke="var(--accent)" stroke-width="1.2" fill="none" opacity=".55"/>';}
+  g.innerHTML=h;
+
+  // site bars
+  var counts=[34,22,41,57,18,29,25,12,38,20],max=57,sb='';
+  counts.forEach(function(c,i){sb+='<div style="display:grid;grid-template-columns:52px 1fr 28px;gap:8px;align-items:center;font-size:12px"><span>site-'+(i<9?'0':'')+(i+1)+'</span><div class="bar"><i style="width:'+(c/max*100)+'%"></i></div><span style="text-align:right;font-variant-numeric:tabular-nums">'+c+'</span></div>';});
+  document.getElementById('siteBars').innerHTML=sb;
+
+  // kanban
+  var cols=[['New Lead',['Elena V. · site-04 · EN','Li W. · site-07 · 中文','Nguyen T. · site-02 · VI']],['Contacted',['Omar K. · site-09 · عربي','Sara M. · site-01 · EN']],['Consultation Scheduled',['Chen Y. · site-04 · 中文']],['Qualified',['Pham D. · site-03 · VI','Ahmed R. · site-06 · EN']],['Proposal Sent',['Zhang H. · site-10 · 中文']],['Agreement Signed',['Mr. A. · site-04 · EN']]],kb='';
+  cols.forEach(function(c){kb+='<div class="col"><h5>'+c[0]+'<span>'+c[1].length+'</span></h5>';c[1].forEach(function(n){var p=n.split(' · ');kb+='<div class="card" tabindex="0" data-n="'+p[0]+'"><b>'+p[0]+'</b><span class="m">'+p[1]+' · '+p[2]+'</span></div>';});kb+='</div>';});
+  var K=document.getElementById('kanban');K.innerHTML=kb;
+  K.addEventListener('click',function(e){var c=e.target.closest('.card');if(c)document.getElementById('leadName').textContent=c.dataset.n+' (synthetic)';});
+
+  // journey
+  var J=[['Enquiry on one of 10 websites','Lead created, source + consent stored, rep assigned','Website → API'],
+    ['Screening & consultation','Sales qualifies; outcome recorded (qualified / not eligible / deferred)','Sales'],
+    ['Agreement signed','Client ID + Case ID created; portal invitation sent','Sales → Ops'],
+    ['Onboarding & family','Main applicant + dependants; forms and document checklist generated per person','Client'],
+    ['KYC & document review','Compliance review of risk flags by a person, never automatic','Compliance'],
+    ['Licensed Agent review & submission','Agent checks readiness, submits, records reference','Licensed Agent'],
+    ['Agency vetting & due diligence','Agency queries flow through the approval gate to the client','Agent → Company → Client'],
+    ['Approval in Principle','Payments, property, donation and insurance tasks generated from the pinned rule version','Case manager'],
+    ['Property & payments','Notary completes deed or lease; finance verifies payments against bank evidence','Notary · Finance'],
+    ['Certificate & residence cards','Biometrics, cards issued and expiry dates tracked per person','Case manager'],
+    ['Ongoing compliance','Property holding, insurance, card renewals, annual checks; stays open after 5 years if rules require','Compliance']],js='';
+  J.forEach(function(s,i){js+='<div class="step"><span class="dot '+(i<1?'done':'')+'"></span><span><b>'+s[0]+'</b><br><span style="color:var(--muted)">'+s[1]+'</span></span><span class="pill">'+s[2]+'</span></div>';});
+  document.getElementById('journeySteps').innerHTML=js;
+
+  // tabs + hash
+  var tabs=[].slice.call(document.querySelectorAll('nav.tabs button'));
+  function show(v){if(!document.getElementById('v-'+v))v='map';
+    tabs.forEach(function(b){b.setAttribute('aria-selected',b.dataset.v===v?'true':'false');});
+    document.querySelectorAll('section.view').forEach(function(s){s.hidden=s.id!=='v-'+v;});}
+  tabs.forEach(function(b){b.addEventListener('click',function(){location.hash=b.dataset.v;show(b.dataset.v);});});
+  window.addEventListener('hashchange',function(){show(location.hash.slice(1));});
+  show(location.hash.slice(1)||'map');
+
+  // toasts
+  var t;function toast(m){if(!t){t=document.createElement('div');t.className='toast';t.setAttribute('role','status');document.body.appendChild(t);}t.textContent=m;t.hidden=false;clearTimeout(t._h);t._h=setTimeout(function(){t.hidden=true;},2600);}
+  document.addEventListener('click',function(e){var b=e.target.closest('[data-toast]');if(b)toast(b.dataset.toast);});
+
+  // approval demo
+  var published=false;
+  document.getElementById('approveBtn').addEventListener('click',function(){
+    if(published){toast('Already published');return;}
+    published=true;
+    document.getElementById('fsReview').className='pill ok';
+    document.getElementById('fsApproved').className='pill ok';
+    document.getElementById('fsPub').className='pill ok';
+    var txt=document.getElementById('clientText').textContent;
+    document.getElementById('noReq').hidden=true;
+    var d=document.createElement('div');d.className='grid';d.style.gap='6px';
+    d.innerHTML='<span class="pill gate" style="justify-self:start">Due 25 Nov</span><p style="margin:0;font-size:13px"></p><button class="btn pri" style="justify-self:start">Upload files</button>';
+    d.querySelector('p').textContent=txt;
+    d.querySelector('button').addEventListener('click',function(){toast('Uploaded. Your manager will review before it goes to the Agent.');});
+    document.getElementById('clientRequests').appendChild(d);
+    this.textContent='Published ✓';
+    toast('Published to client portal; client notified');
+  });
+
+  // marketing count
+  function mk(){var n=1904;if(document.getElementById('mkSite').checked)n=Math.round(n*0.28);if(document.getElementById('mkLang').checked)n=Math.round(n*0.4);
+    document.getElementById('mkCount').innerHTML=n.toLocaleString()+'<small>eligible recipients (consented, not unsubscribed)</small>';}
+  ['mkSite','mkLang'].forEach(function(id){document.getElementById(id).addEventListener('change',mk);});mk();
+})();
+</script>
